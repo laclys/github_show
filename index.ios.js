@@ -11,10 +11,12 @@ import {
   Text,
   Navigator,
   View,
-  Image
+  Image,
+  ListView,
 } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import Boy from './Boy';
+import ListViewTest from './ListViewTest';
 
 export default class githubShow extends Component {
   constructor(props){
@@ -66,7 +68,7 @@ export default class githubShow extends Component {
             <View style={styles.page2}></View>
           </TabNavigator.Item>
         </TabNavigator>*/}
-        <Navigator
+        {/*<Navigator
           initialRoute={
             {
               component:Boy
@@ -77,7 +79,9 @@ export default class githubShow extends Component {
             return <Component navigator={navigator} {...route.params}/>
           }}
         >
-        </Navigator>
+        </Navigator>*/}
+        <ListViewTest/>
+        
       </View>
     );
   }
