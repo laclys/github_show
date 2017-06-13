@@ -78,8 +78,8 @@ export default class ListViewTest extends Component {
     }
     this.onLoad();
   }
-  renderRow(item) {
-    return <View style={styles.row}>
+  renderRow(item,sectionID, rowID, highlightRow) {
+    return <View key={rowID} style={styles.row}>
       <TouchableOpacity
         onPress={()=>{
           this.toast.show('clicked!'+item.fullName,DURATION.LENGTH_LONG)
@@ -109,8 +109,8 @@ export default class ListViewTest extends Component {
         <NavigationBar title={'ListViewTest'}/>
         <ListView
           dataSource={this.state.dataScource}
-          renderRow={(item) => this.renderRow(item)}
-          renderSeparator={(sectionID, rowID, adjacentRowHighlighted)=>this.renderSeparator()}
+          renderRow={(item,sectionID, rowID, highlightRow) => this.renderRow(item,sectionID, rowID, highlightRow)}
+          renderSeparator={(sectionID, rowID, adjacentRowHighlighted)=>this.renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
           renderFooter={()=>this.renderFooter()}
           refreshControl={<RefreshControl
             refreshing={this.state.isLoading}
