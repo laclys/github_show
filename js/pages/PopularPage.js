@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TextInput,ListView} from 'react-native';
 import NavigationBar from '../common/NavigationBar'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import HomePage from './HomePages'
+import RepositoryCell from '../common/RepositoryCell'
 
 import DataRepository from '../expand/dao/DataRepository'
 
@@ -55,21 +56,14 @@ class PopularTab extends Component{
         })
       })
       .catch(error=>{
-        this.setState({
-          result:JSON.stringify(error)
-        })
+        console.log(error);
       })
   }
   genUrl(key){
     return URL + key + QUERY_STR;
   }
   renderRow(data){
-    return <View>
-        <Text>{data.full_name}</Text>
-        <Text>{data.description}</Text>
-        <Text>{data.owner.avatar_url}</Text>
-        <Text>{data.stargazers_count}</Text>
-      </View>
+    return <RepositoryCell data={data}/>
   }
   render() {
     return <View>
