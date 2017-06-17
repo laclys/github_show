@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput,ListView} from 'react-native';
 import NavigationBar from '../common/NavigationBar'
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import HomePage from './HomePages'
@@ -13,30 +13,6 @@ export default class PopularPage extends Component {
   constructor(props) {
     super(props);
     this.dataRepository=new DataRepository();
-    this.state={
-      result:''
-    }
-  }
-  onLoad(){
-    let url=this.genUrl(this.text);
-    console.log(url);
-    this.dataRepository.fetchNetRepository(url)
-      .then(result=>{
-        console.log('成功')
-        this.setState({
-          result:JSON.stringify(result)
-        })
-      })
-      .catch(error=>{
-        console.log('失败')
-        this.setState({
-          result:JSON.stringify(error)
-        })
-      })
-  }
-  genUrl(key){
-    console.log('genUrl')
-    return URL + key + QUERY_STR;
   }
   render() {
     return <View style={styles.container}>
@@ -52,17 +28,6 @@ export default class PopularPage extends Component {
         <PopularTab tabLabel="Vue">Vue</PopularTab>
         <PopularTab tabLabel="Python">Python</PopularTab>
       </ScrollableTabView>
-      {/*<Text 
-        onPress={()=>{
-          this.onLoad()
-        }}
-        style={styles.text}>获取数据
-      </Text>
-      <TextInput
-        style={{height:40,borderWidth:1}}
-        onChangeText={text=>this.text=text}
-      />
-      <Text style={{height:500}}>{this.state.result}</Text>*/}
     </View>
   }
 }
@@ -72,7 +37,8 @@ class PopularTab extends Component{
     super(props);
     this.dataRepository=new DataRepository();
     this.state={
-      result:''
+      result:'',
+      dataSource:new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2})
     }
   }
   componentDidMount(){
@@ -83,25 +49,34 @@ class PopularTab extends Component{
     console.log(url);
     this.dataRepository.fetchNetRepository(url)
       .then(result=>{
-        console.log('成功')
+        console.log(123);
         this.setState({
-          result:JSON.stringify(result)
+          dataSource:this.state.dataSource.cloneWithRows(result.items)
         })
       })
       .catch(error=>{
-        console.log('失败')
         this.setState({
           result:JSON.stringify(error)
         })
       })
   }
   genUrl(key){
-    console.log('genUrl')
     return URL + key + QUERY_STR;
+  }
+  renderRow(data){
+    return <View>
+        <Text>{data.full_name}</Text>
+        <Text>{data.description}</Text>
+        <Text>{data.owner.avatar_url}</Text>
+        <Text>{data.stargazers_count}</Text>
+      </View>
   }
   render() {
     return <View>
-            <Text style={{height:600}}>{this.state.result}</Text>      
+            <ListView
+              dataSource={this.state.dataSource}
+              renderRow={(data)=>this.renderRow(data)}
+            /> 
           </View> 
   }
 }
