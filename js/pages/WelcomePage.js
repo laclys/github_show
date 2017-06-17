@@ -19,7 +19,7 @@ export default class WelcomePage extends Component {
   }
   render() {
     return <View style={styles.container}>
-      <NavigationBar title={'欢迎'}/>
+      {/*<NavigationBar title={'欢迎'}/>*/}
       <Image
         style={styles.welPic}
           source={require('../../pic.jpg')}
