@@ -91,6 +91,7 @@ class PopularTab extends Component{
                   // ios 刷新等待颜色
                   tintColor={'#6cf'}
                   title={'努力加载中~~~~'}
+                  titleColor={'grey'}
                 />
               }
             /> 
