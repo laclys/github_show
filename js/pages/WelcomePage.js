@@ -12,7 +12,7 @@ export default class WelcomePage extends Component {
         .props
         .navigator
         .resetTo({component: HomePage})
-    }, 2000)
+    }, 500)
   }
   componentWilllUnmount() {
     this.timer && clearTimeout(this.timer);
