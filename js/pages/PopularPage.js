@@ -22,6 +22,10 @@ export default class PopularPage extends Component {
         style={{backgroundColor:'#6495ED'}}
       />
       <ScrollableTabView
+        tabBarBackgroundColor="#6495ED"
+        tabBarInactiveTextColor="lightgrey"
+        tabBarActiveTextColor="mintcream"
+        tabBarUnderlineStyle={{backgroundColor:'mintcream',height:2}}
         renderTabBar={()=><ScrollableTabBar/>}
       >
         <PopularTab tabLabel="Java">Java</PopularTab>

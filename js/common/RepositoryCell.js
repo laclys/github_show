@@ -7,9 +7,7 @@ export default class RepositoryCell extends Component {
   }
   render() {
     return <TouchableOpacity style={styles.container}>
-      <View style={{
-        margin: 10
-        }}>
+      <View style={styles.cell_container}>
         {/*全名*/}
         <Text style={styles.title}>{this.props.data.full_name}</Text>
         {/*项目描述*/}
@@ -68,5 +66,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 2,
     color: '#757575'
+  },
+  cell_container:{
+    backgroundColor:'white',
+    padding:10,
+    marginLeft:5,
+    marginRight:5,
+    marginVertical:3,
+    borderWidth:0.5,
+    borderColor:'#ddd',
+    //ios:
+    shadowOffset:{
+      width:0.5,
+      height:0.5
+    },
+    shadowOpacity:0.4,
+    shadowRadius:1,
+    // android:
+    elevation:2
   }
 })
