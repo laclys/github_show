@@ -10,7 +10,9 @@ import {
 } from 'react-native';
 
 import TabNavigator from 'react-native-tab-navigator';
-import PopularPage from './PopularPage'
+import PopularPage from './PopularPage';
+import AsyncStorageTest from '../../AsyncStorageTest';
+
 export default class HomePage extends Component {
   constructor(props){
     super(props);
@@ -22,6 +24,7 @@ export default class HomePage extends Component {
     return (
       <View style={styles.container}>
         <TabNavigator>
+
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tb_popular'}
             selectedTitleStyle={{color:'#2196f3'}}
@@ -31,6 +34,7 @@ export default class HomePage extends Component {
             onPress={() => this.setState({ selectedTab: 'tb_popular' })}>
             <PopularPage/>
           </TabNavigator.Item>
+
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tb_trending'}
             selectedTitleStyle={{color:'yellow'}}
@@ -38,8 +42,9 @@ export default class HomePage extends Component {
             renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_trending.png')} />}
             renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'yellow'}]} source={require('../../res/images/ic_trending.png')} />}
             onPress={() => this.setState({ selectedTab: 'tb_trending' })}>
-            <View style={styles.page2}></View>
+            <AsyncStorageTest />
           </TabNavigator.Item>
+
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tb_favorite'}
             selectedTitleStyle={{color:'#7FFFD4'}}
@@ -49,6 +54,7 @@ export default class HomePage extends Component {
             onPress={() => this.setState({ selectedTab: 'tb_favorite' })}>
             <View style={styles.page1}></View>
           </TabNavigator.Item>
+
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tb_my'}
             selectedTitleStyle={{color:'#DA70D6'}}
