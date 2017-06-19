@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Navigator,Image} from 'react-native';
+import {View, Text, StyleSheet, Navigator,Image,TouchableOpacity,ScrollView} from 'react-native';
 import NavigationBar from '../../common/NavigationBar'
 import ViewUtils from '../../util/ViewUtils'
 
@@ -10,15 +10,30 @@ export default class CustomKeyPage extends Component {
   onSave(){
     this.props.navigator.pop();
   }
+  renderView(){
+    
+  }
   render() {
+    let rightButton=<TouchableOpacity
+      onPress={
+        ()=>this.props.onSave()
+      }
+    >
+      <View style={{margin:10}}>
+        <Text style={styles.btn}>Save</Text>
+      </View>
+    </TouchableOpacity>
+
     return <View style={styles.container}>
       <NavigationBar title='自定义~标签'
         leftButton={ViewUtils.getLeftButton(()=>{
           this.onSave()
         })}
-      
+        rightButton={rightButton}
       />
-      <Text style={styles.text}>自定义标签</Text>
+      <ScrollView>
+        {this.renderView()}
+      </ScrollView>
     </View>
   }
 }
@@ -28,5 +43,9 @@ const styles = StyleSheet.create({
   },
   text:{
     fontSize:29
+  },
+  btn:{
+    fontSize:20,
+    color:'white'
   }
 });
