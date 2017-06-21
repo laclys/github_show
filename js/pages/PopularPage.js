@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TextInput,ListView,RefreshControl} from 'react-native';
-import NavigationBar from '../common/NavigationBar'
+import NavigationBar from '../common/NavigationBar';
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view';
-import HomePage from './HomePages'
-import RepositoryCell from '../common/RepositoryCell'
-
+import HomePage from './HomePages';
+import RepositoryCell from '../common/RepositoryCell';
+import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
 import DataRepository from '../expand/dao/DataRepository'
 
 const URL='https://api.github.com/search/repositories?q=';
@@ -13,26 +13,51 @@ const QUERY_STR='&sort=stars&order=desc';
 export default class PopularPage extends Component {
   constructor(props) {
     super(props);
+    this.languageDao=new LanguageDao(FLAG_LANGUAGE.flag_key)
     this.dataRepository=new DataRepository();
+    this.state={
+      languages:[]
+    }
   }
+
+  componentDidMount(){
+    this.loadData();
+  }
+  loadData(){
+  this.languageDao.fetch()
+      .then(result=>{
+        this.setState({
+          languages:result
+        })
+      })
+      .catch(error=>{
+        console.log(error);
+      })
+}
   render() {
-    return <View style={styles.container}>
-      <NavigationBar 
-        title={'Popular'}
-        style={{backgroundColor:'#6495ED'}}
-      />
+    let content=this.state.languages.length>0?
       <ScrollableTabView
         tabBarBackgroundColor="#6495ED"
         tabBarInactiveTextColor="lightgrey"
         tabBarActiveTextColor="mintcream"
         tabBarUnderlineStyle={{backgroundColor:'mintcream',height:2}}
         renderTabBar={()=><ScrollableTabBar/>}
-      >
-        <PopularTab tabLabel="Java">Java</PopularTab>
+        > 
+        {this.state.languages.map((result,i,arr)=>{
+          let lan=arr[i];
+          return lan.checked? <PopularTab key={i} tabLabel={lan.name}>Java</PopularTab>:null;
+        })}
+        {/*<PopularTab tabLabel="Java">Java</PopularTab>
         <PopularTab tabLabel="IOS">IOS</PopularTab>
         <PopularTab tabLabel="Vue">Vue</PopularTab>
-        <PopularTab tabLabel="Python">Python</PopularTab>
-      </ScrollableTabView>
+        <PopularTab tabLabel="Python">Python</PopularTab>*/}
+      </ScrollableTabView>:null;
+    return <View style={styles.container}>
+      <NavigationBar 
+        title={'Popular'}
+        style={{backgroundColor:'#6495ED'}}
+      />
+      {content}
     </View>
   }
 }
