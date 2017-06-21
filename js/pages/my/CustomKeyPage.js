@@ -4,11 +4,13 @@ import NavigationBar from '../../common/NavigationBar'
 import ViewUtils from '../../util/ViewUtils'
 import LanguageDao,{FLAG_LANGUAGE} from '../../expand/dao/LanguageDao'
 import CheckBox from 'react-native-check-box'
+import ArrayUtils from '../../util/ArrayUtils'
 
 export default class CustomKeyPage extends Component {
   constructor(props) {
     super(props);
     this.languageDao=new LanguageDao(FLAG_LANGUAGE.flag_key);
+    this.changeValue=[];
     this.state={
       dataArray:[]
     }
@@ -28,6 +30,11 @@ export default class CustomKeyPage extends Component {
         })
   }
   onSave(){
+    if(this.changeValue.length===0){
+      this.props.navigator.pop();
+      return;
+    }
+    this.languageDao.save(this.state.dataArray);
     this.props.navigator.pop();
   }
   renderView(){
@@ -57,19 +64,22 @@ export default class CustomKeyPage extends Component {
     return views;
   }
   onClick(data){
-    
+    data.checked=!data.checked;
+    ArrayUtils.updateArray(this.changeValue,data);
+
   }
   renderCheckBox(data){
     leftText=data.name;
     return (
       <CheckBox
-        style={{flex:1}}
+        style={{flex:1,padding:10}}
         onClick={()=>this.onClick(data)}
         leftText={leftText}  
-        checkedImage={<Image
+        isChecked={data.checked}
+        checkedImage={<Image style={{tintColor:'#6cf'}}
           source={require('./images/ic_check_box.png')}
          />}
-        unCheckedImage={<Image
+        unCheckedImage={<Image style={{tintColor:'#6cf'}}
           source={require('./images/ic_check_box_outline_blank.png')}
          />}
       />
@@ -78,7 +88,7 @@ export default class CustomKeyPage extends Component {
   render() {
     let rightButton=<TouchableOpacity
       onPress={
-        ()=>this.props.onSave()
+        ()=>this.onSave()
       }
     >
       <View style={{margin:10}}>
@@ -111,8 +121,8 @@ const styles = StyleSheet.create({
     color:'white'
   },
   line:{
-    height:1,
-    backgroundColor:'black'
+    height:0.3,
+    backgroundColor:'grey'
   },
   item:{
     flexDirection:'row',
