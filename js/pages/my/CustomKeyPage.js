@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Navigator,Image,TouchableOpacity,ScrollView} from 'react-native';
+import {View, Text, StyleSheet, Navigator,Image,TouchableOpacity,ScrollView,Alert} from 'react-native';
 import NavigationBar from '../../common/NavigationBar'
 import ViewUtils from '../../util/ViewUtils'
 import LanguageDao,{FLAG_LANGUAGE} from '../../expand/dao/LanguageDao'
@@ -66,7 +66,6 @@ export default class CustomKeyPage extends Component {
   onClick(data){
     data.checked=!data.checked;
     ArrayUtils.updateArray(this.changeValue,data);
-
   }
   renderCheckBox(data){
     leftText=data.name;
@@ -85,6 +84,20 @@ export default class CustomKeyPage extends Component {
       />
     )
   }
+  onBack(){
+    if(this.changeValue===0){
+      this.props.navigator.pop();
+      return;
+    }
+    Alert.alert(
+      '注意~',
+      '没保存就走啊~',
+      [
+        {text:'走咯~',onPress:()=>{this.props.navigator.pop()},style:'cancel'},
+        {text:'保存~',onPress:()=>{this.onSave()},style:'cancel'}
+      ]
+    )
+  }
   render() {
     let rightButton=<TouchableOpacity
       onPress={
@@ -99,7 +112,7 @@ export default class CustomKeyPage extends Component {
     return <View style={styles.container}>
       <NavigationBar title='自定义~标签'
         leftButton={ViewUtils.getLeftButton(()=>{
-          this.onSave()
+          this.onBack()
         })}
         rightButton={rightButton}
       />
