@@ -16,8 +16,8 @@
     "checked": true
   },
   {
-    "path": "MySQL",
-    "name": "MySQL",
+    "path": "vue",
+    "name": "Vue",
     "checked": false
   },
   {
@@ -26,13 +26,13 @@
     "checked": false
   },
   {
-    "path": " jQuery",
-    "name": " jQuery",
+    "path": " kotlin",
+    "name": " Kotlin",
     "checked": false
   },
   {
-    "path": " react",
-    "name": " React",
+    "path": " javascript",
+    "name": " JavaScript",
     "checked": true
   }
 ]
