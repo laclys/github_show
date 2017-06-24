@@ -85,7 +85,7 @@ export default class CustomKeyPage extends Component {
     )
   }
   onBack(){
-    if(this.changeValue===0){
+    if(this.changeValue.length === 0){
       this.props.navigator.pop();
       return;
     }
