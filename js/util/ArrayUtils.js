@@ -12,4 +12,19 @@ export default class ArrayUtils {
     }
     array.push(item);
   }
+  /**
+   * 克隆一个数组
+   * @param from 
+   * @return {newArr}
+   */
+  static clone(from){
+    if(!from){
+      return [];
+    }
+    let newArr=[];
+    for(let i=0;i<from.length;i++){
+      newArr[i]=from[i];
+    }
+    return newArr;
+  }
 }
