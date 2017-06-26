@@ -11,6 +11,7 @@ export default class CustomKeyPage extends Component {
     super(props);
     this.languageDao=new LanguageDao(FLAG_LANGUAGE.flag_key);
     this.changeValue=[];
+    this.isRemoveKey=this.props.isRemoveKey?true:false;
     this.state={
       dataArray:[]
     }
@@ -34,6 +35,9 @@ export default class CustomKeyPage extends Component {
       this.props.navigator.pop();
       return;
     }
+    for(let i =0,l=this.changeValue.length;i<l;i++){
+      ArrayUtils.remove(this.state.dataArray,this.changeValue[i]);
+    }
     this.languageDao.save(this.state.dataArray);
     this.props.navigator.pop();
   }
@@ -41,7 +45,7 @@ export default class CustomKeyPage extends Component {
     if(!this.state.dataArray||this.state.dataArray.length===0)return null;
     let len = this.state.dataArray.length;
     let views=[];
-    for(let i=0,l=len-1;i<l;i+=2){
+    for(let i=0,l=len-2;i<l;i+=2){
       views.push(
         <View key={i}>
           <View style={styles.item}>
@@ -64,17 +68,21 @@ export default class CustomKeyPage extends Component {
     return views;
   }
   onClick(data){
-    data.checked=!data.checked;
+    if(!this.isRemoveKey){
+      data.checked=!data.checked;
+    }
     ArrayUtils.updateArray(this.changeValue,data);
   }
   renderCheckBox(data){
-    leftText=data.name;
+    let leftText=data.name;
+    // 判断是不是通过移除标签进入
+    let isChecked = this.isRemoveKey?false:data.checked;
     return (
       <CheckBox
         style={{flex:1,padding:10}}
         onClick={()=>this.onClick(data)}
         leftText={leftText}  
-        isChecked={data.checked}
+        isChecked={isChecked}
         checkedImage={<Image style={{tintColor:'#6cf'}}
           source={require('./images/ic_check_box.png')}
          />}
@@ -99,18 +107,22 @@ export default class CustomKeyPage extends Component {
     )
   }
   render() {
+    // 判断是不是通过移除标签进入
+    let title = this.isRemoveKey?'标签移除~':'自定义~标签';
+    let rightButtonTitle= this.isRemoveKey?'Remove':'Save';
+
     let rightButton=<TouchableOpacity
       onPress={
         ()=>this.onSave()
       }
     >
       <View style={{margin:10}}>
-        <Text style={styles.btn}>Save</Text>
+        <Text style={styles.btn}>{rightButtonTitle}</Text>
       </View>
     </TouchableOpacity>
 
     return <View style={styles.container}>
-      <NavigationBar title='自定义~标签'
+      <NavigationBar title={title}
         leftButton={ViewUtils.getLeftButton(()=>{
           this.onBack()
         })}
