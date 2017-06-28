@@ -62,6 +62,7 @@ export default class DataRepository{
                     return;
                 }
                 resolve(responseData.items);
+                console.log('请求了网路数据');
                 this.saveRepository(url, responseData.items)
             }).done();
         })
@@ -76,7 +77,6 @@ export default class DataRepository{
    * @param {*} longTime 数据的时间戳
    */
   checkDate(longTime){
-    // return false;
     let currentDate = new Date();
     let targetDate = new Date();
     targetDate.setTime(longTime);

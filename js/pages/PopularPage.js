@@ -96,9 +96,11 @@ class PopularTab extends Component{
         }
       })
       .then(items=>{
+        console.log(items);
         if(!items||items.length===0) return;
         this.setState({
           dataSource:this.state.dataSource.cloneWithRows(items),
+          isLoading:false,
         });
         DeviceEventEmitter.emit('showToast','显示网络数据');
       })
