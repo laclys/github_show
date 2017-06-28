@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TextInput,ListView,RefreshControl} from 'react-native';
+import {View, Text, StyleSheet, TextInput,ListView,RefreshControl,DeviceEventEmitter} from 'react-native';
 import NavigationBar from '../common/NavigationBar';
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import HomePage from './HomePages';
@@ -14,7 +14,6 @@ export default class PopularPage extends Component {
   constructor(props) {
     super(props);
     this.languageDao=new LanguageDao(FLAG_LANGUAGE.flag_key)
-    this.dataRepository=new DataRepository();
     this.state={
       languages:[]
     }
@@ -88,16 +87,20 @@ class PopularTab extends Component{
           dataSource:this.state.dataSource.cloneWithRows(items),
           isLoading:false,
         });
-        if(result&&result.update_data&&!this.dataRepository.checkData(result.update_data)){
+        // console.log(this.dataRepository.checkDate(result.update_date));
+        if(result&&result.update_date&&!this.dataRepository.checkDate(result.update_date)){
+          DeviceEventEmitter.emit('showToast','数据过时');
           return this.dataRepository.fetchNetRepository(url);
+        }else{
+          DeviceEventEmitter.emit('showToast','显示缓存数据');
         }
       })
       .then(items=>{
         if(!items||items.length===0) return;
         this.setState({
           dataSource:this.state.dataSource.cloneWithRows(items),
-          isLoading:false,
         });
+        DeviceEventEmitter.emit('showToast','显示网络数据');
       })
       .catch(error=>{
         console.log(error);
