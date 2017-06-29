@@ -62,7 +62,7 @@ export default class HomePage extends Component {
           <TabNavigator.Item
             selected={this.state.selectedTab === 'tb_favorite'}
             selectedTitleStyle={{color:'#7FFFD4'}}
-            title="收藏"
+            title="V2EX"
             renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_polular.png')} />}
             renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'#7FFFD4'}]} source={require('../../res/images/ic_polular.png')} />}
             onPress={() => this.setState({ selectedTab: 'tb_favorite' })}>
