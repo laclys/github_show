@@ -50,6 +50,7 @@ export default class RepositoryDetail extends Component {
         ref={webView=>this.webView=webView}
         source={{uri:this.state.url}}
         onNavigationStateChange={(e)=>this.onNavigationStateChange(e)}
+        startInLoadingState={true}
       ></WebView>
     </View>
   }
