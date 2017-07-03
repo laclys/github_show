@@ -16,7 +16,7 @@ import PopularPage from './PopularPage';
 import AsyncStorageTest from '../../AsyncStorageTest';
 import MyPage from './my/MyPage'
 import WebViewTest from '../../WebViewTest';
-import TreandingTest from '../../TreandingTest';
+import TreandingPage from './TreandingPage';
 
 export default class HomePage extends Component {
   constructor(props){
@@ -58,7 +58,8 @@ export default class HomePage extends Component {
             renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'yellow'}]} source={require('../../res/images/ic_trending.png')} />}
             onPress={() => this.setState({ selectedTab: 'tb_trending' })}>
             {/*<AsyncStorageTest />*/}
-            <TreandingTest />
+            {/*<TreandingTest />*/}
+            <TreandingPage />
           </TabNavigator.Item>
 
           <TabNavigator.Item

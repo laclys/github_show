@@ -5,7 +5,7 @@ import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-v
 import HomePage from './HomePages';
 import RepositoryCell from '../common/RepositoryCell';
 import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
-import DataRepository from '../expand/dao/DataRepository'
+import DataRepository,{FLAG_STORAGE} from '../expand/dao/DataRepository'
 import RepositoryDetail from './RepositoryDetail';
 
 const URL='https://api.github.com/search/repositories?q=';
@@ -65,7 +65,7 @@ export default class PopularPage extends Component {
 class PopularTab extends Component{
     constructor(props) {
     super(props);
-    this.dataRepository=new DataRepository();
+    this.dataRepository=new DataRepository(FLAG_STORAGE.flag_popular);
     this.state={
       result:'',
       isLoading:false,
