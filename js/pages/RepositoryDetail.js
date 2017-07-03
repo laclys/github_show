@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import NavigationBar from '../../js/common/NavigationBar'
 import ViewUtils from '../util/ViewUtils'
-const URL = "https://www.v2ex.com/"
+// const URL = "https://www.v2ex.com/"
 export default class RepositoryDetail extends Component {
   constructor(props) {
     super(props);

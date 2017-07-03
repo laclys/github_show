@@ -111,9 +111,6 @@ class PopularTab extends Component{
           isLoading:false
         })
       })
-      .catch(error=>{
-        console.log(error);
-      })
   }
   // 拼接url
   genUrl(key){

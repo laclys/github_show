@@ -67,11 +67,11 @@ export default class DataRepository{
             }).done();
         })
   }
-    saveRepository(url, items, callback) {
-        if (!items || !url)return;
-        let wrapData = {items: items, update_date: new Date().getTime()};
-        AsyncStorage.setItem(url, JSON.stringify(wrapData), callback);
-    }
+  saveRepository(url, items, callback) {
+      if (!items || !url)return;
+      let wrapData = {items: items, update_date: new Date().getTime()};
+      AsyncStorage.setItem(url, JSON.stringify(wrapData), callback);
+  }
   /**
    * 判断数据是否过时 传过来的是数据的时间戳
    * @param {*} longTime 数据的时间戳
