@@ -2,9 +2,17 @@
 import {
   AsyncStorage
 } from 'react-native'
+import GitHubTrending from 'GitHubTrending'
 
+export var FLAG_STORAGE = {flag_popular:'popular',flag_trending:'trending'};
 
 export default class DataRepository{
+  constructor(flag){
+    this.flag = flag;
+    if(flag===FLAG_STORAGE.flag_trending){
+      this.trending=new GitHubTrending();
+    }
+  }
   fetchRepository(url){
     return new Promise((resolve,reject)=>{
       // 获取本地的数据
@@ -52,19 +60,31 @@ export default class DataRepository{
   }
   fetchNetRepository(url){
         return new Promise((resolve, reject)=> {
-            fetch(url)
-                .then((response)=>response.json())
-                .catch((error)=> {
-                    reject(error);
-                }).then((responseData)=> {
-                if (!responseData || !responseData.items) {
-                    reject(new Error('responseData is null'));
-                    return;
-                }
-                resolve(responseData.items);
-                console.log('请求了网路数据');
-                this.saveRepository(url, responseData.items)
-            }).done();
+            if(this.flag===FLAG_STORAGE.flag_trending){
+              this.trending.fetchTrending(url)
+                  .then(result=>{
+                    if(!result) {
+                      reject(new Error('responseData is null'));
+                      return;
+                    }
+                    this.saveRepository(url,result);
+                    resolve(result);
+                  })
+            }else{
+              fetch(url)
+                  .then((response)=>response.json())
+                  .catch((error)=> {
+                      reject(error);
+                  }).then((responseData)=> {
+                  if (!responseData || !responseData.items) {
+                      reject(new Error('responseData is null'));
+                      return;
+                  }
+                  resolve(responseData.items);
+                  console.log('请求了网路数据');
+                  this.saveRepository(url, responseData.items)
+              }).done();
+            }
         })
   }
   saveRepository(url, items, callback) {
