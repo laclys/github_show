@@ -16,7 +16,7 @@ import PopularPage from './PopularPage';
 import AsyncStorageTest from '../../AsyncStorageTest';
 import MyPage from './my/MyPage'
 import WebViewTest from '../../WebViewTest';
-import TreandingPage from './TreandingPage';
+import TrendingPage from './TrendingPage';
 
 export default class HomePage extends Component {
   constructor(props){
@@ -59,7 +59,7 @@ export default class HomePage extends Component {
             onPress={() => this.setState({ selectedTab: 'tb_trending' })}>
             {/*<AsyncStorageTest />*/}
             {/*<TreandingTest />*/}
-            <TreandingPage />
+            <TrendingPage />
           </TabNavigator.Item>
 
           <TabNavigator.Item

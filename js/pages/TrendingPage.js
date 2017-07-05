@@ -9,7 +9,7 @@ import DataRepository ,{FLAG_STORAGE}from '../expand/dao/DataRepository'
 import NavigationBar from '../common/NavigationBar'
 
 const URL = 'https://github.com/trending/';
-export default class TreandingPage extends Component {
+export default class TrendingPage extends Component {
   constructor(props){
     super(props);
     this.datarepository=new DataRepository(FLAG_STORAGE.flag_trending);
