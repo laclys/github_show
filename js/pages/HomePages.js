@@ -66,7 +66,7 @@ export default class HomePage extends Component {
             selected={this.state.selectedTab === 'tb_favorite'}
             selectedTitleStyle={{color:'#7FFFD4'}}
             title="V2EX"
-            renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_polular.png')} />}
+            renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_favorite.png')} />}
             renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'#7FFFD4'}]} source={require('../../res/images/ic_polular.png')} />}
             onPress={() => this.setState({ selectedTab: 'tb_favorite' })}>
             <WebViewTest></WebViewTest>
@@ -76,7 +76,7 @@ export default class HomePage extends Component {
             selected={this.state.selectedTab === 'tb_my'}
             selectedTitleStyle={{color:'#DA70D6'}}
             title="我的"
-            renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_trending.png')} />}
+            renderIcon={() => <Image style={styles.image} source={require('../../res/images/ic_my.png')} />}
             renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'#DA70D6'}]} source={require('../../res/images/ic_trending.png')} />}
             onPress={() => this.setState({ selectedTab: 'tb_my' })}>
             <MyPage {...this.props}/>

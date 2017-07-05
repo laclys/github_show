@@ -8,40 +8,40 @@
   {
     "path": "unknown",
     "name": "Unknown",
-    "checked": true
+    "checked": false
   },
   {
     "path": "as3",
     "name": "ActionScript",
     "short_name": "AS",
-    "checked": true
+    "checked": false
   },
   {
     "path": "apacheconf",
     "name": "ApacheConf",
-    "checked": true
+    "checked": false
   },
   {
     "path": "nasm",
     "name": "Assembly",
     "short_name": "NASM",
-    "checked": true
+    "checked": false
   },
   {
     "path": "bat",
     "name": "Batchfile",
     "short_name": "BAT",
-    "checked": true
+    "checked": false
   },
   {
     "path": "c",
     "name": "C",
-    "checked": true
+    "checked": false
   },
   {
     "path": "csharp",
     "name": "C#",
-    "checked": true
+    "checked": false
   },
   {
     "path": "cpp",
@@ -51,12 +51,12 @@
   {
     "path": "cmake",
     "name": "CMake",
-    "checked": true
+    "checked": false
   },
   {
     "path": "css",
     "name": "CSS",
-    "checked": false
+    "checked": true
   },
   {
     "path": "clojure",
@@ -119,7 +119,7 @@
   {
     "path": "go",
     "name": "Go",
-    "checked": false
+    "checked": true
   },
   {
     "path": "groovy",
@@ -150,7 +150,7 @@
   {
     "path": "java",
     "name": "Java",
-    "checked": false
+    "checked": true
   },
   {
     "path": "javascript",
@@ -219,7 +219,7 @@
   {
     "path": "php",
     "name": "PHP",
-    "checked": false
+    "checked": true
   },
   {
     "path": "plsql",
@@ -304,7 +304,7 @@
   {
     "path": "typescript",
     "name": "TypeScript",
-    "checked": false
+    "checked": true
   },
   {
     "path": "verilog",
