@@ -7,14 +7,19 @@ export default class TrendingCell extends Component {
     super(props);
   }
   render() {
+    let description = '<p>'+this.props.data.description+'</p>';
     return <TouchableOpacity style={styles.container} onPress={this.props.onSelect}>
       <View style={styles.cell_container}>
         {/*全名*/}
         <Text style={styles.title}>{this.props.data.fullName}</Text>
         {/*项目描述*/}
         <HTMLView
-          value={this.props.data.description}
+          value={description}
           onLinkPress={(url) => {}}
+          stylesheet={{
+            p:styles.description,
+            a:styles.description
+          }}
         />
         {/*✨数*/}
         <Text style={styles.description}>{this.props.data.meta}</Text>
