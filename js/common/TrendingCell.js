@@ -12,7 +12,8 @@ export default class TrendingCell extends Component {
         <Text style={styles.title}>{this.props.data.fullName}</Text>
         {/*项目描述*/}
         <Text style={styles.description}>{this.props.data.description}</Text>
-        {/*底部：作者 ✨数*/}
+        {/*✨数*/}
+        <Text style={styles.description}>{this.props.data.meta}</Text>
         <View
           style={{
           flexDirection: 'row',
@@ -23,7 +24,7 @@ export default class TrendingCell extends Component {
             flexDirection: 'row',
             alignItems: 'center'
           }}>
-            <Text>Build by:</Text>
+            <Text style={styles.author}>Build by:</Text>
             {this
               .props
               .data
@@ -34,18 +35,11 @@ export default class TrendingCell extends Component {
                   height: 22,
                   width: 22
                 }}
+                  key={i}
                   source={{
                   uri: arr[i]
                 }}/>
               })}
-          </View>
-          <View
-            style={{
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}>
-            <Text>Stars:</Text>
-            <Text>{this.props.data.meta}</Text>
           </View>
           <Image
             style={{
@@ -90,5 +84,10 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     // android:
     elevation: 2
+  },
+  author:{
+    fontSize: 14,
+    marginBottom: 2,
+    color: '#757575'
   }
 })
