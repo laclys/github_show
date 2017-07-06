@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import HTMLView from 'react-native-htmlview'
 
 export default class TrendingCell extends Component {
   constructor(props) {
@@ -11,7 +12,10 @@ export default class TrendingCell extends Component {
         {/*全名*/}
         <Text style={styles.title}>{this.props.data.fullName}</Text>
         {/*项目描述*/}
-        <Text style={styles.description}>{this.props.data.description}</Text>
+        <HTMLView
+          value={this.props.data.description}
+          onLinkPress={(url) => {}}
+        />
         {/*✨数*/}
         <Text style={styles.description}>{this.props.data.meta}</Text>
         <View
