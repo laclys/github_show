@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, TextInput,ListView,RefreshControl,DeviceEventEmi
 import NavigationBar from '../common/NavigationBar';
 import ScrollableTabView ,{ScrollableTabBar} from 'react-native-scrollable-tab-view';
 import HomePage from './HomePages';
-import RepositoryCell from '../common/RepositoryCell';
+import TrendingCell from '../common/TrendingCell';
 import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
 import DataRepository,{FLAG_STORAGE} from '../expand/dao/DataRepository'
 import RepositoryDetail from './RepositoryDetail';
@@ -60,7 +60,7 @@ export default class TrendingPage extends Component {
 class TrendingTab extends Component{
     constructor(props) {
     super(props);
-    this.dataRepository=new DataRepository(FLAG_STORAGE.flag_popular);
+    this.dataRepository=new DataRepository(FLAG_STORAGE.flag_trending);
     this.state={
       result:'',
       isLoading:false,
@@ -68,13 +68,13 @@ class TrendingTab extends Component{
     }
   }
   componentDidMount(){
-    // this.LoadData();
+    this.LoadData();
   }
   LoadData(){
     this.setState({
       isLoading:true
     })
-    let url=this.genUrl(this.props.tabLabel);
+    let url=this.genUrl('?since=daily',this.props.tabLabel);
     console.log(url);
     this.dataRepository.fetchRepository(url)
       .then(result=>{
@@ -107,8 +107,8 @@ class TrendingTab extends Component{
       })
   }
   // 拼接url
-  genUrl(key){
-    return URL + key;
+  genUrl(timeSpan,category,key){
+    return API_URL + category + timeSpan.searchText;
   }
   onSelect(item) {
     this.props.navigator.push({
@@ -120,7 +120,7 @@ class TrendingTab extends Component{
     })
   }
   renderRow(data){
-    return <RepositoryCell
+    return <TrendingCell
         data={data}
         onSelect={()=>this.onSelect(data)}
       />
