@@ -41,7 +41,7 @@ export default class HomePage extends Component {
       selectedTitleStyle={{color:'#2196f3'}}
       title = {title}
       renderIcon={() => <Image style={styles.image} source={renderIcon} />}
-      renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'#2196f3'}]} source={require('../../res/images/ic_polular.png')} />}
+      renderSelectedIcon={() => <Image style={[styles.image,{tintColor:'#2196f3'}]} source={renderIcon} />}
       onPress={() => this.setState({ selectedTab: selectedTab })}>
       <Component {...this.props}/>
     </TabNavigator.Item>
