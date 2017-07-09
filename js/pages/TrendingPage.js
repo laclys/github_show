@@ -25,6 +25,7 @@ export default class TrendingPage extends Component {
       languages:[],
       isVisible:false,
       buttonReact: {},
+      timeSpan:timeSpanTextArray[0]
     }
   }
 
@@ -63,7 +64,7 @@ export default class TrendingPage extends Component {
                 color:'white',
                 fontWeight:'400'
               }}
-            >Hot</Text>
+            >Hot  {this.state.timeSpan.showText}</Text>
             <Image
               style={{width:12,height:12,marginLeft:5}}
               source={require('../../res/images/ic_spinner_triangle.png')}
@@ -77,6 +78,12 @@ export default class TrendingPage extends Component {
       isVisible:false,
     })
   }
+  onSelectTimeSpan(timeSpan) {
+    this.closePopover();
+    this.setState({
+        timeSpan: timeSpan
+    })
+}
   render() {
     let content=this.state.languages.length>0?
       <ScrollableTabView
@@ -88,7 +95,7 @@ export default class TrendingPage extends Component {
         > 
         {this.state.languages.map((result,i,arr)=>{
           let lan=arr[i];
-          return lan.checked? <TrendingTab key={i} tabLabel={lan.name} {...this.props}>Java</TrendingTab>:null;
+          return lan.checked? <TrendingTab key={i} tabLabel={lan.name} timeSpan={this.state.timeSpan} {...this.props}></TrendingTab>:null;
         })}
       </ScrollableTabView>:null;
       let timeSpanView = 
@@ -102,9 +109,11 @@ export default class TrendingPage extends Component {
           {timeSpanTextArray.map((result,i,arr)=>{
             return <TouchableOpacity
                 key={i}
+                onPress={()=>this.onSelectTimeSpan(arr[i])}
+                underlayColor='transparent'
               >
               <Text 
-                style={{fontSize:18,color:'white',fontWeight:'400'}}
+                style={{fontSize:18,color:'white',fontWeight:'400' ,padding:8}}
               >{arr[i].showText}</Text>
             </TouchableOpacity>
           })}
@@ -131,13 +140,22 @@ class TrendingTab extends Component{
     }
   }
   componentDidMount(){
-    this.LoadData();
+    this.LoadData(this.props.timeSpan,true);
   }
-  LoadData(){
-    this.setState({
+  componentWillReceiveProps(nextProps) {
+      if (nextProps.timeSpan !== this.props.timeSpan) {
+          console.log(nextProps.timeSpan);
+          this.LoadData(nextProps.timeSpan,true)
+      }
+  }
+  onRefresh() {
+    this.LoadData(this.props.timeSpan,true)
+  }
+  LoadData(timeSpan,isRefresh){
+    this.updateState({
       isLoading:true
     })
-    let url=this.genUrl('?since=daily',this.props.tabLabel);
+    let url=this.genUrl(timeSpan,this.props.tabLabel);
     console.log(url);
     this.dataRepository.fetchRepository(url)
       .then(result=>{
@@ -169,9 +187,13 @@ class TrendingTab extends Component{
         })
       })
   }
+  updateState(dic){
+    if(!this)return;
+    this.setState(dic)
+  }
   // 拼接url
-  genUrl(timeSpan,category,key){
-    return API_URL + category + timeSpan.searchText;
+  genUrl(timeSpan,category){
+    return API_URL + category + '?' +timeSpan.searchText;
   }
   onSelect(item) {
     this.props.navigator.push({
@@ -198,7 +220,7 @@ class TrendingTab extends Component{
                   // 是否刷新flag
                   refreshing={this.state.isLoading}
                   // 下拉刷新
-                  onRefresh={()=>this.LoadData()}
+                  onRefresh={()=>this.onRefresh()}
                   // android 刷新等待颜色（数组形式）
                   colors={['#6cf']}
                   // ios 刷新等待颜色
