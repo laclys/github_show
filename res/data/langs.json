@@ -11,12 +11,6 @@
     "checked": false
   },
   {
-    "path": "as3",
-    "name": "ActionScript",
-    "short_name": "AS",
-    "checked": false
-  },
-  {
     "path": "apacheconf",
     "name": "ApacheConf",
     "checked": false
@@ -36,11 +30,6 @@
   {
     "path": "c",
     "name": "C",
-    "checked": false
-  },
-  {
-    "path": "csharp",
-    "name": "C#",
     "checked": false
   },
   {
@@ -277,8 +266,8 @@
     "checked": false
   },
   {
-    "path": "scheme",
-    "name": "Scheme",
+    "path": "lua",
+    "name": "Lua",
     "checked": false
   },
   {
@@ -287,8 +276,8 @@
     "checked": false
   },
   {
-    "path": "supercollider",
-    "name": "SuperCollider",
+    "path": "kotlin",
+    "name": "Kotlin",
     "checked": false
   },
   {
@@ -312,8 +301,8 @@
     "checked": false
   },
   {
-    "path": "xslt",
-    "name": "XSLT",
+    "path": "vue",
+    "name": "Vue",
     "checked": false
   }
 ]
