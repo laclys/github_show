@@ -18,7 +18,7 @@ export default class SortKeyPage extends Component {
     }
   }
   componentDidMount() {
-    this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
+    this.languageDao = new LanguageDao(this.props.flag);
     this.loadData()
   }
 
