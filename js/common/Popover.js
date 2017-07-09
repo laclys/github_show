@@ -218,7 +218,7 @@ var Popover = React.createClass({
       popoverOrigin.y + contentSize.height / 2);
     return new Point(anchorPoint.x - popoverCenter.x, anchorPoint.y - popoverCenter.y);
   },
-  componentWillReceiveProps(nextProps:any) {
+  componentWillReceiveProps(nextProps) {
     var willBeVisible = nextProps.isVisible;
     var {
       isVisible,
