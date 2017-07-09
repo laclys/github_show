@@ -72,6 +72,11 @@ export default class TrendingPage extends Component {
         </TouchableOpacity>
       </View> 
   }
+  closePopover() {
+    this.setState({
+      isVisible:false,
+    })
+  }
   render() {
     let content=this.state.languages.length>0?
       <ScrollableTabView
@@ -90,8 +95,19 @@ export default class TrendingPage extends Component {
         <Popover
           isVisible={this.state.isVisible}
           fromRect={this.state.buttonRect}
-          onClose={this.closePopover}>
-          <Text>I'm the content of this popover!</Text>
+          placement="bottom"
+          onClose={()=>this.closePopover()}
+          contentStyle={{backgroundColor:"#343434",opacity:0.82}}
+          >
+          {timeSpanTextArray.map((result,i,arr)=>{
+            return <TouchableOpacity
+                key={i}
+              >
+              <Text 
+                style={{fontSize:18,color:'white',fontWeight:'400'}}
+              >{arr[i].showText}</Text>
+            </TouchableOpacity>
+          })}
         </Popover>
     return <View style={styles.container}>
       <NavigationBar 
