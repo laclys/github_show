@@ -4,8 +4,36 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 export default class RepositoryCell extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isFavorite:false,
+      favoriteIcon:require('../../res/images/ic_unstar_transparent.png')
+    }
+  }
+  setFavoriteState(flag){
+    this.setState({
+      isFavorite:flag,
+      favoriteIcon:flag?require('../../res/images/ic_star.png')
+        :require('../../res/images/ic_unstar_transparent.png')
+    })
+  }
+  // 收藏✨btn
+  onPressFavorite() {
+    this.setFavoriteState(!this.state.isFavorite);
   }
   render() {
+    let favoriteBtn = <TouchableOpacity
+      onPress={()=>this.onPressFavorite()}
+    >
+      <Image
+        style={[{
+        width: 22,
+        height: 22
+        },
+        {tintColor:"#2196f3"}
+        ]}
+        source={this.state.favoriteIcon}
+      />
+    </TouchableOpacity> 
     return <TouchableOpacity style={styles.container}
       onPress={this.props.onSelect}
     >
@@ -43,12 +71,7 @@ export default class RepositoryCell extends Component {
             <Text>Stars:</Text>
             <Text>{this.props.data.stargazers_count}</Text>
           </View>
-          <Image
-            style={{
-            width: 22,
-            height: 22
-            }}
-            source={require('../../res/images/ic_star.png')}/>
+          {favoriteBtn}
         </View>
       </View>
     </TouchableOpacity>
