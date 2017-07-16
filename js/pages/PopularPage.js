@@ -8,9 +8,13 @@ import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
 import DataRepository,{FLAG_STORAGE} from '../expand/dao/DataRepository'
 import RepositoryDetail from './RepositoryDetail';
 import ProjectModel from '../model/ProjectModel';
+import FavoriteDao from '../expand/dao/FavoriteDao';
+import Utills from '../util/Utills'
 
 const URL='https://api.github.com/search/repositories?q=';
 const QUERY_STR='&sort=stars&order=desc';
+var favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
+
 
 export default class PopularPage extends Component {
   constructor(props) {
@@ -34,7 +38,7 @@ export default class PopularPage extends Component {
       .catch(error=>{
         console.log(error);
       })
-}
+  }
   render() {
     let content=this.state.languages.length>0?
       <ScrollableTabView
@@ -70,7 +74,8 @@ class PopularTab extends Component{
     this.state={
       result:'',
       isLoading:false,
-      dataSource:new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2})
+      dataSource:new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2}),
+      favoriteKeys:[]
     }
   }
   componentDidMount(){
@@ -81,13 +86,27 @@ class PopularTab extends Component{
     let projectModels = [];
     let items = this.items;
     for(var i=0,len=items.length;i<len;i++){
-      projectModels.push(new ProjectModel(items[i],false));
+      projectModels.push(new ProjectModel(items[i],Utills.checkFavorite(items[i],this.state.favoriteKeys)));
     }
-    console.log(projectModels);
+    // console.log(projectModels);
     this.updateState({
       isLoading:false,
       dataSource:this.getDataSource(projectModels),
     })
+  }
+  getFavoriteKeys() {
+    favoriteDao.getFavoriteKeys()
+        .then(keys=>{
+          if(keys){
+            this.updateState({
+              favoriteKeys:keys
+            })
+          }
+          this.flushFavoriteState();
+        })
+        .catch(e=>{
+          this.flushFavoriteState();
+        })
   }
   updateState(dic){
     if(!this)return;
@@ -102,7 +121,7 @@ class PopularTab extends Component{
     this.dataRepository.fetchRepository(url)
       .then(result=>{
         this.items = result && result.items? result.items:result?result:[];
-        this.flushFavoriteState();
+        this.getFavoriteKeys()
         if(result&&result.update_date&&!this.dataRepository.checkDate(result.update_date)){
           DeviceEventEmitter.emit('showToast','数据过时');
           return this.dataRepository.fetchNetRepository(url);
@@ -111,10 +130,10 @@ class PopularTab extends Component{
         }
       })
       .then(items=>{
-        console.log(items);
+        // console.log(items);
         if(!items||items.length===0) return;
         this.items=items;
-        this.flushFavoriteState();
+        this.getFavoriteKeys()
         DeviceEventEmitter.emit('showToast','显示网络数据');
       })
       .catch(error=>{
@@ -141,7 +160,12 @@ class PopularTab extends Component{
     })
   }
   onFavorite(item,isFavorite) {
-    
+    console.log(item,isFavorite)
+    if(isFavorite) {
+      favoriteDao.saveFavoriteItem(item.id.toString(),JSON.stringify(item));
+    }else {
+      favoriteDao.removeFavoriteItem(item.id.toString());
+    }
   }
   renderRow(projectModel){
     return <RepositoryCell
