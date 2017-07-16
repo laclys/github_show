@@ -7,6 +7,7 @@ import RepositoryCell from '../common/RepositoryCell';
 import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao';
 import DataRepository,{FLAG_STORAGE} from '../expand/dao/DataRepository'
 import RepositoryDetail from './RepositoryDetail';
+import ProjectModel from '../model/ProjectModel';
 
 const URL='https://api.github.com/search/repositories?q=';
 const QUERY_STR='&sort=stars&order=desc';
@@ -75,20 +76,33 @@ class PopularTab extends Component{
   componentDidMount(){
     this.LoadData();
   }
+  // 更新Project item 收藏 状态
+  flushFavoriteState() {
+    let projectModels = [];
+    let items = this.items;
+    for(var i=0,len=items.length;i<len;i++){
+      projectModels.push(new ProjectModel(items[i],false));
+    }
+    console.log(projectModels);
+    this.updateState({
+      isLoading:false,
+      dataSource:this.getDataSource(projectModels),
+    })
+  }
+  updateState(dic){
+    if(!this)return;
+    this.setState(dic);
+  }
   LoadData(){
-    this.setState({
+    this.updateState({
       isLoading:true
     })
     let url=this.genUrl(this.props.tabLabel);
     console.log(url);
     this.dataRepository.fetchRepository(url)
       .then(result=>{
-        let items = result && result.items? result.items:result?result:[];
-        this.setState({
-          dataSource:this.state.dataSource.cloneWithRows(items),
-          isLoading:false,
-        });
-        // console.log(this.dataRepository.checkDate(result.update_date));
+        this.items = result && result.items? result.items:result?result:[];
+        this.flushFavoriteState();
         if(result&&result.update_date&&!this.dataRepository.checkDate(result.update_date)){
           DeviceEventEmitter.emit('showToast','数据过时');
           return this.dataRepository.fetchNetRepository(url);
@@ -99,15 +113,13 @@ class PopularTab extends Component{
       .then(items=>{
         console.log(items);
         if(!items||items.length===0) return;
-        this.setState({
-          dataSource:this.state.dataSource.cloneWithRows(items),
-          isLoading:false,
-        });
+        this.items=items;
+        this.flushFavoriteState();
         DeviceEventEmitter.emit('showToast','显示网络数据');
       })
       .catch(error=>{
         console.log(error);
-        this.setState({
+        this.updateState({
           isLoading:false
         })
       })
@@ -115,6 +127,9 @@ class PopularTab extends Component{
   // 拼接url
   genUrl(key){
     return URL + key + QUERY_STR;
+  }
+  getDataSource(items) {
+    return this.state.dataSource.cloneWithRows(items);
   }
   onSelect(item) {
     this.props.navigator.push({
@@ -125,10 +140,15 @@ class PopularTab extends Component{
       }
     })
   }
-  renderRow(data){
+  onFavorite(item,isFavorite) {
+    
+  }
+  renderRow(projectModel){
     return <RepositoryCell
-        data={data}
-        onSelect={()=>this.onSelect(data)}
+        key={projectModel.item.id}
+        projectModel={projectModel}
+        onSelect={()=>this.onSelect(projectModel)}
+        onFavorite={(item,isFavorite)=>this.onFavorite(item,isFavorite)}
       />
   }
   render() {

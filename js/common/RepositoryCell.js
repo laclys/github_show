@@ -5,8 +5,10 @@ export default class RepositoryCell extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFavorite:false,
-      favoriteIcon:require('../../res/images/ic_unstar_transparent.png')
+      isFavorite:this.props.projectModel.isFavorite,
+      favoriteIcon:this.props.projectModel.isFavorite?
+        require('../../res/images/ic_star.png')
+        :require('../../res/images/ic_unstar_transparent.png')
     }
   }
   setFavoriteState(flag){
@@ -16,11 +18,16 @@ export default class RepositoryCell extends Component {
         :require('../../res/images/ic_unstar_transparent.png')
     })
   }
+  componentWillReceiveProps(nextProps){
+    this.setFavoriteState(nextProps.projectModel.isFavorite)
+  }
   // 收藏✨btn
   onPressFavorite() {
     this.setFavoriteState(!this.state.isFavorite);
+    this.props.onFavorite(this.props.projectModel.item,!this.state.isFavorite);
   }
   render() {
+    let data = this.props.projectModel.item?this.props.projectModel.item :this.props.projectModel
     let favoriteBtn = <TouchableOpacity
       onPress={()=>this.onPressFavorite()}
     >
@@ -39,9 +46,9 @@ export default class RepositoryCell extends Component {
     >
       <View style={styles.cell_container}>
         {/*全名*/}
-        <Text style={styles.title}>{this.props.data.full_name}</Text>
+        <Text style={styles.title}>{data.full_name}</Text>
         {/*项目描述*/}
-        <Text style={styles.description}>{this.props.data.description}</Text>
+        <Text style={styles.description}>{data.description}</Text>
         {/*底部：作者 ✨数*/}
         <View
           style={{
@@ -60,7 +67,7 @@ export default class RepositoryCell extends Component {
               width: 22
               }}
               source={{
-              uri: this.props.data.owner.avatar_url
+              uri: data.owner.avatar_url
             }}/>
           </View>
           <View
@@ -69,7 +76,7 @@ export default class RepositoryCell extends Component {
             alignItems: 'center'
             }}>
             <Text>Stars:</Text>
-            <Text>{this.props.data.stargazers_count}</Text>
+            <Text>{data.stargazers_count}</Text>
           </View>
           {favoriteBtn}
         </View>
