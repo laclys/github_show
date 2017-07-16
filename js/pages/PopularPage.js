@@ -150,11 +150,12 @@ class PopularTab extends Component{
   getDataSource(items) {
     return this.state.dataSource.cloneWithRows(items);
   }
-  onSelect(item) {
+  onSelect(projectModel) {
     this.props.navigator.push({
+      title:projectModel.item.full_name,
       component:RepositoryDetail,
       params:{
-        item:item,
+        projectModel:projectModel,
         ...this.props
       }
     })
