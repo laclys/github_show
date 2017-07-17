@@ -5,13 +5,48 @@ import HTMLView from 'react-native-htmlview'
 export default class TrendingCell extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isFavorite:this.props.projectModel.isFavorite,
+      favoriteIcon:this.props.projectModel.isFavorite?
+        require('../../res/images/ic_star.png')
+        :require('../../res/images/ic_unstar_transparent.png')
+    }
+  }
+  setFavoriteState(flag){
+    this.setState({
+      isFavorite:flag,
+      favoriteIcon:flag?require('../../res/images/ic_star.png')
+        :require('../../res/images/ic_unstar_transparent.png')
+    })
+  }
+  componentWillReceiveProps(nextProps){
+    this.setFavoriteState(nextProps.projectModel.isFavorite)
+  }
+  // 收藏✨btn
+  onPressFavorite() {
+    this.setFavoriteState(!this.state.isFavorite);
+    this.props.onFavorite(this.props.projectModel.item,!this.state.isFavorite);
   }
   render() {
-    let description = '<p>'+this.props.data.description+'</p>';
+    let data = this.props.projectModel.item?this.props.projectModel.item :this.props.projectModel
+    let favoriteBtn = <TouchableOpacity
+      onPress={()=>this.onPressFavorite()}
+    >
+      <Image
+        style={[{
+        width: 22,
+        height: 22
+        },
+        {tintColor:"#2196f3"}
+        ]}
+        source={this.state.favoriteIcon}
+      />
+    </TouchableOpacity> 
+    let description = '<p>'+data.description+'</p>';
     return <TouchableOpacity style={styles.container} onPress={this.props.onSelect}>
       <View style={styles.cell_container}>
         {/*全名*/}
-        <Text style={styles.title}>{this.props.data.fullName}</Text>
+        <Text style={styles.title}>{data.fullName}</Text>
         {/*项目描述*/}
         <HTMLView
           value={description}
@@ -22,7 +57,7 @@ export default class TrendingCell extends Component {
           }}
         />
         {/*✨数*/}
-        <Text style={styles.description}>{this.props.data.meta}</Text>
+        <Text style={styles.description}>{data.meta}</Text>
         <View
           style={{
           flexDirection: 'row',
@@ -34,11 +69,7 @@ export default class TrendingCell extends Component {
             alignItems: 'center'
           }}>
             <Text style={styles.author}>Build by:</Text>
-            {this
-              .props
-              .data
-              .contributors
-              .map((result, i, arr) => {
+            {data.contributors.map((result, i, arr) => {
                 return <Image
                   style={{
                   height: 22,
@@ -50,12 +81,7 @@ export default class TrendingCell extends Component {
                 }}/>
               })}
           </View>
-          <Image
-            style={{
-            width: 22,
-            height: 22
-          }}
-            source={require('../../res/images/ic_star.png')}/>
+          {favoriteBtn}
         </View>
       </View>
     </TouchableOpacity>
