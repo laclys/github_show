@@ -146,7 +146,7 @@ class TrendingTab extends Component{
     }
   }
   componentDidMount(){
-    this.LoadData(this.props.timeSpan,true);
+    this.LoadData(this.props.timeSpan);
   }
   componentWillReceiveProps(nextProps) {
       if (nextProps.timeSpan !== this.props.timeSpan) {

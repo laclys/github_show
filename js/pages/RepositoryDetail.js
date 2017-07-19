@@ -20,7 +20,7 @@ export default class RepositoryDetail extends Component {
     this.url=this.props.projectModel.item.html_url?this.props.projectModel.item.html_url
       :URL+this.props.projectModel.item.fullName;
     var title=this.props.projectModel.item.full_name?this.props.projectModel.item.full_name:this.props.projectModel.item.fullName;
-    this.favoriteDao = new FavoriteDao(this.flag)
+    this.favoriteDao = new FavoriteDao(this.props.flag);
     this.state = {
       url:this.url,
       title:title,
@@ -35,7 +35,6 @@ export default class RepositoryDetail extends Component {
     if(this.state.canGoBack) {
       this.webView.goBack();
     }else{
-      // DeviceEventEmitter.emit('showToast','到顶了');
       this.props.navigator.pop();
     }
   }
