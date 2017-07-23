@@ -77,4 +77,33 @@ export default class FavoriteDao{
       }
     });
   }
+  /**
+   * 获取用户所收藏的项目
+   */
+  getAllItems() {
+    return new Promise((resolve)=>{
+      this.getFavoriteKeys().then(keys=>{
+        var items=[];
+        if(keys) {
+          AsyncStorage.multiGet(keys,(err,stores)=>{
+            try {
+              stores.map((result,i,arr)=>{
+                let key = arr[i][0];
+                let value = arr[i][1];
+                if (value)items.push(JSON.parse(value));
+              })
+              resolve(items);
+            }catch(e){
+              reject(e);
+            }
+          })
+        }else{
+          resolve(items);
+        }
+      })
+      .catch((e)=>{
+        reject(e);
+      })
+    })
+  }
 }
