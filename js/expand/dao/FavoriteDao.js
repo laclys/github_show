@@ -71,7 +71,7 @@ export default class FavoriteDao{
    * @param key 项目 id
    */
   removeFavoriteItem(key) {
-    AsyncStorage.(key,(error,result)=>{
+    AsyncStorage.removeItem(key,(error,result)=>{
       if (!error) {
         this.updateFavoriteKeys(key,false);
       }
