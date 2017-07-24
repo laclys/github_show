@@ -20,7 +20,7 @@ var timeSpanTextArray=[
   new TimeSpan('本周','since=weekly'),
   new TimeSpan('本月','since=monthly'),
   ];
-var favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
+var favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_trending);
 var dataRepository=new DataRepository(FLAG_STORAGE.flag_trending);
 
 export default class TrendingPage extends Component {
