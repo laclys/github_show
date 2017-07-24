@@ -61,14 +61,14 @@ export default class RepositoryCell extends Component {
             alignItems: 'center'
             }}>
             <Text>Author:</Text>
-            <Image
+              <Image
               style={{
               height: 22,
               width: 22
               }}
               source={{
               uri: data.owner.avatar_url
-            }}/>
+            }}/>  
           </View>
           <View
             style={{

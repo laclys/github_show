@@ -1,7 +1,13 @@
-import React ,{Component} from 'react';
+/**
+ * FavoriteDao
+ * @flow
+ */
+'use strict';
+
+
 import {
-  AsyncStorage
-} from 'react-native'
+  AsyncStorage,
+} from 'react-native';
 
 const FAVORITE_KEY_PREFIX='favorite_'
 
@@ -77,33 +83,36 @@ export default class FavoriteDao{
       }
     });
   }
+
   /**
-   * 获取用户所收藏的项目
+   * 获取所以收藏的项目
+   * @return {Promise}
    */
   getAllItems() {
-    return new Promise((resolve)=>{
-      this.getFavoriteKeys().then(keys=>{
-        var items=[];
-        if(keys) {
-          AsyncStorage.multiGet(keys,(err,stores)=>{
+    return new Promise((resolve,reject)=> {
+      this.getFavoriteKeys().then((keys)=> {
+        var items = [];
+        if (keys) {
+          AsyncStorage.multiGet(keys, (err, stores) => {
             try {
-              stores.map((result,i,arr)=>{
-                let key = arr[i][0];
-                let value = arr[i][1];
+              stores.map((result, i, store) => {
+                // get at each store's key/value so you can work with it
+                let key = store[i][0];
+                let value = store[i][1];
                 if (value)items.push(JSON.parse(value));
-              })
+              });
               resolve(items);
-            }catch(e){
+            } catch (e) {
               reject(e);
             }
-          })
-        }else{
+          });
+        } else {
           resolve(items);
         }
-      })
-      .catch((e)=>{
+      }).catch((e)=> {
         reject(e);
       })
     })
   }
 }
+

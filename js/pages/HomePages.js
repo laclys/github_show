@@ -17,6 +17,7 @@ import AsyncStorageTest from '../../AsyncStorageTest';
 import MyPage from './my/MyPage'
 import WebViewTest from '../../WebViewTest';
 import TrendingPage from './TrendingPage';
+import FavoritePage from './FavoritePage';
 
 export default class HomePage extends Component {
   constructor(props){
@@ -52,7 +53,7 @@ export default class HomePage extends Component {
         <TabNavigator>
           {this._renderTab(PopularPage,'tb_popular',"最热",require('../../res/images/ic_polular.png'))}
           {this._renderTab(TrendingPage,'tb_trending',"趋势",require('../../res/images/ic_trending.png'))}
-          {this._renderTab(WebViewTest,'tb_favorite',"V2EX",require('../../res/images/ic_favorite.png'))}
+          {this._renderTab(FavoritePage,'tb_favorite',"收藏",require('../../res/images/ic_favorite.png'))}
           {this._renderTab(MyPage,'tb_my',"我的",require('../../res/images/ic_my.png'))}
         </TabNavigator>
         <Toast ref={toast=>this.toast=toast} />
