@@ -138,6 +138,7 @@ export default class TrendingPage extends Component {
 class TrendingTab extends Component{
     constructor(props) {
     super(props);
+    this.isFavoriteChanged=false;
     this.state={
       result:'',
       isLoading:false,
@@ -147,11 +148,21 @@ class TrendingTab extends Component{
   }
   componentDidMount(){
     this.LoadData(this.props.timeSpan);
+    this.listener = DeviceEventEmitter.addListener('favoriteChanged_trending',()=>{
+      this.isFavoriteChanged=true;
+    })
+  }
+  componentWillUnmount() {
+    if (this.listener){
+      this.listener.remove();
+    }
   }
   componentWillReceiveProps(nextProps) {
       if (nextProps.timeSpan !== this.props.timeSpan) {
-          console.log(nextProps.timeSpan);
           this.LoadData(nextProps.timeSpan,true)
+      }else if(this.isFavoriteChanged){
+        this.isFavoriteChanged = false;
+        this.getFavoriteKeys();
       }
   }
   onRefresh() {

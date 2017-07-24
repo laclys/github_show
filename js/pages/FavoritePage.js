@@ -9,6 +9,7 @@ import {FLAG_STORAGE} from '../expand/dao/DataRepository'
 import RepositoryDetail from './RepositoryDetail';
 import ProjectModel from '../model/ProjectModel';
 import FavoriteDao from '../expand/dao/FavoriteDao';
+import ArrayUtils from '../util/ArrayUtils';
 
 export default class FavoritePage extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class FavTab extends Component{
     constructor(props) {
       super(props);
       this.favoriteDao = new FavoriteDao(this.props.flag);
+      this.unFavoriteItems = [];
       this.state={
         isLoading:false,
         dataSource:new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2}),
@@ -51,16 +53,22 @@ class FavTab extends Component{
       }
     }
   componentDidMount(){
-    this.LoadData();
+    this.LoadData(true);
+  }
+  componentWillReceiveProps(nextProps) {
+    this.LoadData(false);
   }
   updateState(dic){
     if(!this)return;
     this.setState(dic);
   }
-  LoadData(){
-    this.updateState({
-      isLoading:true
-    })
+  LoadData(isShowLoading){
+    // 是否显示加载视图
+    if(isShowLoading){
+      this.updateState({
+        isLoading:true
+      })
+    }
     this.favoriteDao.getAllItems()
         .then(items=>{
           var resultData = [];
@@ -99,6 +107,15 @@ class FavTab extends Component{
       this.favoriteDao.saveFavoriteItem(key,JSON.stringify(item));
     }else {
       this.favoriteDao.removeFavoriteItem(key);
+    }
+    // 记录下用户所做的所有修改
+    ArrayUtils.updateArray(this.unFavoriteItems,item);
+    if(this.unFavoriteItems.length>0){
+      if(this.props.flag===FLAG_STORAGE.flag_popular){
+        DeviceEventEmitter.emit('favoriteChanged_popular')
+      }else {
+        DeviceEventEmitter.emit('favoriteChanged_trending')
+      }
     }
   }
   renderRow(projectModel){

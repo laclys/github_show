@@ -70,6 +70,7 @@ export default class PopularPage extends Component {
 class PopularTab extends Component{
     constructor(props) {
     super(props);
+    this.isFavoriteChanged=false;
     this.dataRepository=new DataRepository(FLAG_STORAGE.flag_popular);
     this.state={
       result:'',
@@ -80,6 +81,20 @@ class PopularTab extends Component{
   }
   componentDidMount(){
     this.LoadData();
+    this.listener = DeviceEventEmitter.addListener('favoriteChanged_popular',()=>{
+      this.isFavoriteChanged=true;
+    })
+  }
+  componentWillUnmount() {
+    if (this.listener){
+      this.listener.remove();
+    }
+  }
+  componentWillReceiveProps() {
+    if(this.isFavoriteChanged) {
+      this.isFavoriteChanged = false;
+      this.getFavoriteKeys();
+    }
   }
   // 更新Project item 收藏 状态
   flushFavoriteState() {
