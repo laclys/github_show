@@ -1,4 +1,4 @@
-import React ,{Component} from 'react';
+import React, {Component} from 'react'
 import {
   View,
   StyleSheet,
@@ -8,51 +8,51 @@ import {
 import NavigationBar from './js/common/NavigationBar'
 import GitHubTrending from 'GitHubTrending'
 
-const URL = 'https://github.com/trending/';
+const URL = 'https://github.com/trending/'
 export default class TreandingTest extends Component {
-  constructor(props){
-    super(props);
-    this.trending=new GitHubTrending();
-    this.state={
-      result:''
+  constructor (props) {
+    super(props)
+    this.trending = new GitHubTrending()
+    this.state = {
+      result: ''
     }
   }
-  onLoad() {
-    let url=URL+this.text;
-    console.log(url);
+  onLoad () {
+    let url = URL + this.text
+    console.log(url)
     this.trending.fetchTrending(url)
-        .then(result=>{
+        .then(result => {
           this.setState({
-            result:JSON.stringify(result),
+            result: JSON.stringify(result)
           })
         })
-        .catch(error=>{
+        .catch(error => {
           this.setState({
-            result:JSON.stringify(error),
+            result: JSON.stringify(error)
           })
         })
   }
-  render(){
+  render () {
     return <View>
       <NavigationBar
-         title={'TreandingTest'}
-      ></NavigationBar>
+        title={'TreandingTest'}
+       />
       <TextInput
-        style={{borderWidth:1,
-          height:40,
-          margin:6
+        style={{borderWidth: 1,
+          height: 40,
+          margin: 6
         }}
-        onChangeText={text=>this.text=text}
-      ></TextInput>
+        onChangeText={text => this.text = text}
+       />
 
-        <View style={{flexDirection:'row'}}>
-          <Text style={{fontSize:20,margin:5}}
-            onPress={()=>this.onLoad()}
+      <View style={{flexDirection: 'row'}}>
+        <Text style={{fontSize: 20, margin: 5}}
+          onPress={() => this.onLoad()}
           >加载数据</Text>
-          <Text style={{flex:1}}>
+        <Text style={{flex: 1}}>
           {this.state.result}
-          </Text>
-        </View>
+        </Text>
       </View>
+    </View>
   }
 }
