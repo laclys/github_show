@@ -70,7 +70,7 @@ export default class TrendingPage extends Component {
               color: 'white',
               fontWeight: '400'
             }}
-            >Hot                                {this.state.timeSpan.showText}</Text>
+          >Hot{this.state.timeSpan.showText}</Text>
           <Image
             style={{width: 12, height: 12, marginLeft: 5}}
             source={require('../../res/images/ic_spinner_triangle.png')}
