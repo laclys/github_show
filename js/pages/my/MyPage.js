@@ -6,6 +6,7 @@ import SortKeyPage from './SortKeyPage'
 import {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao'
 import {MORE_MENU} from '../../common/MoreMenu'
 import GlobalStyles from '../../../res/styles/GlobalStyles'
+import ViewUtils from '../../util/ViewUtils'
 
 export default class MyPage extends Component {
   constructor (props) {
@@ -14,13 +15,16 @@ export default class MyPage extends Component {
   onClick(tab) {
 
   }
+  getItem(tag,icon,text){
+    return ViewUtils.getSettingItem(()=>this.onClick(tag),icon,text,{tintColor:"#6495ED"},null)
+  } 
   render () {
     var navigationBar = <NavigationBar 
       title='My' 
       style={{backgroundColor: '#6495ED'}}
       />
     return (
-    <View style={styles.container}>
+    <View style={GlobalStyles.root_container}>
       {navigationBar}
       <ScrollView>
         <TouchableHighlight
@@ -45,6 +49,11 @@ export default class MyPage extends Component {
           </View>
         </TouchableHighlight>
         <View style={GlobalStyles.line} />
+        {/* popular item */}
+        <Text style={styles.groupTitle}>Popular repo </Text>
+        <View style={GlobalStyles.line} />
+        {this.getItem(MORE_MENU.About,require('./images/ic_custom_language.png'),'Custom Language')}
+        <View style={GlobalStyles.line} />
       </ScrollView>
     </View>)
   }
@@ -59,5 +68,13 @@ const styles = StyleSheet.create({
     alignItems:'center',
     padding:10,
     height:60,
+    backgroundColor:'white'
+  },
+  groupTitle:{
+    marginLeft:10,
+    marginRight:10,
+    marginTop:10,
+    fontSize:12,
+    color:'grey'
   }
 })
