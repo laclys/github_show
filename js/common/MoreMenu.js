@@ -10,4 +10,5 @@
    Remove_Key:'Remove Key',
    About_Author:'About Author',
    About:'About',
+   Theme:'Theme',
  }

@@ -20,7 +20,7 @@ export default class ViewUtils {
             <Image
               style={[{width:16,height:16,marginRight:10},tintStyle]}
               source={icon}
-              resizeMethod='stretch'
+              resize='stretch'
             />
             <Text>{text}</Text>
           </View>
