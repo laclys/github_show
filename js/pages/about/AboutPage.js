@@ -1,99 +1,92 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, Navigator, Image,ScrollView,TouchableHighlight,Dimensions,ListView} from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Navigator,
+  Image,
+  ScrollView,
+  TouchableHighlight,
+  Dimensions,
+  ListView,
+  Platform
+} from 'react-native'
 
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import ViewUtils from '../../util/ViewUtils';
 
 export default class AboutPage extends Component {
- constructor(props) {
+  constructor(props) {
     super(props);
-    this.state =  {
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2
-      }).cloneWithRows([
-        'Simplicity Matters',
-        'Hammock Driven Development',
-        'Value of Values',
-        'Are We There Yet?',
-        'The Language of the System',
-        'Design, Composition, and Performance',
-        'Clojure core.async',
-        'The Functional Database',
-        'Deconstructing the Database',
-        'Hammock Driven Development',
-        'Value of Values'
-      ])
-    };
   }
-
-  render() {
-    const { onScroll = () => {} } = this.props;
+  getParallaxRenderConfig(params) {
+    let config={};
+    // 背景
+    config.renderBackground = () => (
+        <View key="background">
+          <Image
+            source={{
+            uri: params.backgroundImg,
+            width: window.width,
+            height: PARALLAX_HEADER_HEIGHT
+          }}/>
+          <View
+            style={{
+            position: 'absolute',
+            top: 0,
+            width: window.width,
+            backgroundColor: 'rgba(0,0,0,.4)',
+            height: PARALLAX_HEADER_HEIGHT
+          }}/>
+        </View>
+      )
+    // 前景
+    config.renderForeground = () => (
+        <View key="parallax-header" style={styles.parallaxHeader}>
+          <Image style={ styles.avatar } source={{
+            uri: params.avatar,
+            width: AVATAR_SIZE,
+            height: AVATAR_SIZE
+          }}/>
+          <Text style={styles.sectionSpeakerText}>
+            {params.name}
+          </Text>
+          <Text style={styles.sectionTitleText}>
+            {params.desc}
+          </Text>
+        </View>
+      )
+    config.renderStickyHeader = () => (
+        <View key="sticky-header" style={styles.stickySection}>
+          <Text style={styles.stickySectionText}>{params.name}</Text>
+        </View>
+      )
+    config.renderFixedHeader = () => (
+        <View key="fixed-header" style={styles.fixedSection}>
+          {ViewUtils.getLeftButton(()=>this.props.navigator.pop())}
+        </View>
+      )
+    return config;
+  }
+  renderView(params) {
+    let renderConfig = this.getParallaxRenderConfig(params)
     return (
-      <ListView
-        ref="ListView"
-        style={styles.container}
-        dataSource={ this.state.dataSource }
-        renderRow={(rowData) => (
-          <View key={rowData} style={ styles.row }>
-            <Text style={ styles.rowText }>
-              { rowData }
-            </Text>
-          </View>
-         )}
-        renderScrollComponent={props => (
-          <ParallaxScrollView
-            onScroll={onScroll}
-
-            headerBackgroundColor="#333"
-            stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
-            parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
-            backgroundSpeed={10}
-
-            renderBackground={() => (
-              <View key="background">
-                <Image source={{uri: 'https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg',
-                                width: window.width,
-                                height: PARALLAX_HEADER_HEIGHT}}/>
-                <View style={{position: 'absolute',
-                              top: 0,
-                              width: window.width,
-                              backgroundColor: 'rgba(0,0,0,.4)',
-                              height: PARALLAX_HEADER_HEIGHT}}/>
-              </View>
-            )}
-
-            renderForeground={() => (
-              <View key="parallax-header" style={ styles.parallaxHeader }>
-                <Image style={ styles.avatar } source={{
-                  uri: 'https://pbs.twimg.com/profile_images/2694242404/5b0619220a92d391534b0cd89bf5adc1_400x400.jpeg',
-                  width: AVATAR_SIZE,
-                  height: AVATAR_SIZE
-                }}/>
-                <Text style={ styles.sectionSpeakerText }>
-                  Talks by Rich Hickey
-                </Text>
-                <Text style={ styles.sectionTitleText }>
-                  CTO of Cognitec, Creator of Clojure
-                </Text>
-              </View>
-            )}
-
-            renderStickyHeader={() => (
-              <View key="sticky-header" style={styles.stickySection}>
-                <Text style={styles.stickySectionText}>Rich Hickey Talks</Text>
-              </View>
-            )}
-
-            renderFixedHeader={() => (
-              <View key="fixed-header" style={styles.fixedSection}>
-                <Text style={styles.fixedSectionText}
-                      onPress={() => this.refs.ListView.scrollTo({ x: 0, y: 0 })}>
-                  Scroll to top
-                </Text>
-              </View>
-            )}/>
-        )}
+      <ParallaxScrollView
+        headerBackgroundColor="#333"
+        stickyHeaderHeight={STICKY_HEADER_HEIGHT}
+        parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
+        backgroundSpeed={10}
+        {...renderConfig}
       />
     );
+  }
+  render() {
+    return this.renderView({
+      'name': 'Github Repo Show',
+      'desc': 'A Simple React Demo',
+      'avatar':'http://ww2.sinaimg.cn/mw690/68f74d54jw8f22cfa95ijj20ku0kumy7.jpg',
+      'backgroundImg':'http://img.t.sinajs.cn/t5/skin/public/covervip/2042.jpg'
+    })
   }
 }
 
@@ -119,7 +112,9 @@ const styles = StyleSheet.create({
   stickySection: {
     height: STICKY_HEADER_HEIGHT,
     width: 300,
-    justifyContent: 'flex-end'
+    justifyContent: 'center',
+    alignItems:'center',
+    paddingTop: (Platform.OS==='ios')?20:0,
   },
   stickySectionText: {
     color: 'white',
@@ -128,8 +123,15 @@ const styles = StyleSheet.create({
   },
   fixedSection: {
     position: 'absolute',
-    bottom: 10,
-    right: 10
+    bottom: 0,
+    right: 10,
+    left:0,
+    top:0,
+    paddingRight:8,
+    flexDirection:'row',
+    alignItems:'center',
+    paddingTop: (Platform.OS==='ios')?20:0,
+    justifyContent:'space-between'
   },
   fixedSectionText: {
     color: '#999',
