@@ -103,8 +103,9 @@ export default class AboutPage extends Component {
   }
   render() {
     let content =<View>
-      <View style={GlobalStyles.line} />
       {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Blog),require('../../../res/images/ic_contacts.png'),MORE_MENU.Blog,{tintColor:"#6495ED"},null)}
+      <View style={GlobalStyles.line} />
+      {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Blog),require('../../../res/images/ic_feedback.png'),MORE_MENU.Feedback,{tintColor:"#6495ED"},null)}
       <View style={GlobalStyles.line} />
     </View>
     return this.renderView(content,{
