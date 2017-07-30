@@ -17,6 +17,7 @@ import ViewUtils from '../../util/ViewUtils';
 import {MORE_MENU} from '../../common/MoreMenu';
 import GlobalStyles from '../../../res/styles/GlobalStyles'
 import AboutCommon,{FLAG_ABOUT} from './AboutCommon'
+import WebViewPage from '../WebViewPage'
 
 export default class AboutPage extends Component {
   constructor(props) {
@@ -29,7 +30,10 @@ export default class AboutPage extends Component {
   onClick(tab) {
     let TargetComponent,params = {...this.props,menuType:tab}
     switch (tab) {
-      case MORE_MENU.Blog:
+      case MORE_MENU.GitHub:
+        TargetComponent = WebViewPage
+        params.url = 'https://github.com/laclys/github_show'
+        params.title = 'In GitHub'
         break
     }
     switch (tab) {
@@ -54,7 +58,7 @@ export default class AboutPage extends Component {
   }
   render() {
     let content =<View>
-      {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Blog),require('../../../res/images/ic_contacts.png'),MORE_MENU.Blog,{tintColor:"#6495ED"},null)}
+      {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.GitHub),require('../../../res/images/ic_contacts.png'),MORE_MENU.GitHub,{tintColor:"#6495ED"},null)}
       <View style={GlobalStyles.line} />
       {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Feedback),require('../../../res/images/ic_feedback.png'),MORE_MENU.Feedback,{tintColor:"#6495ED"},null)}
       <View style={GlobalStyles.line} />

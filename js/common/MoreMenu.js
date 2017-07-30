@@ -12,5 +12,6 @@
    About:'About',
    Theme:'Theme',
    Blog:'My Blog',
-   Feedback:'Feedback'
+   Feedback:'Feedback',
+   GitHub:'GitHub'
  }
