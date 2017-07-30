@@ -11,4 +11,6 @@
    About_Author:'About Author',
    About:'About',
    Theme:'Theme',
+   Blog:'My Blog',
+   Feedback:'Feedback'
  }

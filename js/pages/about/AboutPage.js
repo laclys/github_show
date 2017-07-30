@@ -14,10 +14,29 @@ import {
 
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import ViewUtils from '../../util/ViewUtils';
+import {MORE_MENU} from '../../common/MoreMenu';
+import GlobalStyles from '../../../res/styles/GlobalStyles'
 
 export default class AboutPage extends Component {
   constructor(props) {
     super(props);
+  }
+  onClick(tab) {
+    let TargetComponent,params = {...this.props,menuType:tab}
+    switch (tab) {
+      case MORE_MENU.Blog:
+        break
+    }
+    switch (tab) {
+      case MORE_MENU.Feedback:
+        break
+    }
+    if(TargetComponent){
+      this.props.navigator.push({
+        component:TargetComponent,
+        params:params
+      })
+    }
   }
   getParallaxRenderConfig(params) {
     let config={};
@@ -68,7 +87,7 @@ export default class AboutPage extends Component {
       )
     return config;
   }
-  renderView(params) {
+  renderView(contentView,params) {
     let renderConfig = this.getParallaxRenderConfig(params)
     return (
       <ParallaxScrollView
@@ -77,11 +96,18 @@ export default class AboutPage extends Component {
         parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
         backgroundSpeed={10}
         {...renderConfig}
-      />
+      >
+        {contentView}
+      </ParallaxScrollView>
     );
   }
   render() {
-    return this.renderView({
+    let content =<View>
+      <View style={GlobalStyles.line} />
+      {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Blog),require('../../../res/images/ic_contacts.png'),MORE_MENU.Blog,{tintColor:"#6495ED"},null)}
+      <View style={GlobalStyles.line} />
+    </View>
+    return this.renderView(content,{
       'name': 'Github Repo Show',
       'desc': 'A Simple React Demo',
       'avatar':'http://ww2.sinaimg.cn/mw690/68f74d54jw8f22cfa95ijj20ku0kumy7.jpg',
