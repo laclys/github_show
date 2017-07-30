@@ -9,7 +9,8 @@ import {
   TouchableHighlight,
   Dimensions,
   ListView,
-  Platform
+  Platform,
+  Linking
 } from 'react-native'
 
 import ViewUtils from '../../util/ViewUtils';
@@ -33,6 +34,15 @@ export default class AboutPage extends Component {
     }
     switch (tab) {
       case MORE_MENU.Feedback:
+        var url = 'mailto://laclys@126.com'
+        // 检查是否安装了对应的应用
+        Linking.canOpenURL(url).then(supported => {
+          if (!supported) {
+            console.log('Can\'t handle url: ' + url);
+          } else {
+            return Linking.openURL(url);
+          }
+        }).catch(err => console.error('An error occurred', err));
         break
     }
     if(TargetComponent){
@@ -46,7 +56,7 @@ export default class AboutPage extends Component {
     let content =<View>
       {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Blog),require('../../../res/images/ic_contacts.png'),MORE_MENU.Blog,{tintColor:"#6495ED"},null)}
       <View style={GlobalStyles.line} />
-      {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Blog),require('../../../res/images/ic_feedback.png'),MORE_MENU.Feedback,{tintColor:"#6495ED"},null)}
+      {ViewUtils.getSettingItem(()=>this.onClick(MORE_MENU.Feedback),require('../../../res/images/ic_feedback.png'),MORE_MENU.Feedback,{tintColor:"#6495ED"},null)}
       <View style={GlobalStyles.line} />
     </View>
     return this.AboutCommon.render(content,{
