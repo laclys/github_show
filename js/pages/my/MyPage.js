@@ -7,6 +7,7 @@ import {FLAG_LANGUAGE} from '../../expand/dao/LanguageDao'
 import {MORE_MENU} from '../../common/MoreMenu'
 import GlobalStyles from '../../../res/styles/GlobalStyles'
 import ViewUtils from '../../util/ViewUtils'
+import AboutPage from '../about/AboutPage'
 
 export default class MyPage extends Component {
   constructor (props) {
@@ -41,6 +42,7 @@ export default class MyPage extends Component {
       case MORE_MENU.About_Author:
         break
       case MORE_MENU.About:
+      TargetComponent=AboutPage
         break
     }
     if(TargetComponent){
