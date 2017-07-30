@@ -91,6 +91,7 @@ export default class AboutPage extends Component {
     let renderConfig = this.getParallaxRenderConfig(params)
     return (
       <ParallaxScrollView
+        backgroundColor="#6495ED"
         headerBackgroundColor="#333"
         stickyHeaderHeight={STICKY_HEADER_HEIGHT}
         parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}

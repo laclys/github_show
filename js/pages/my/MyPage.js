@@ -57,7 +57,7 @@ export default class MyPage extends Component {
   } 
   render () {
     var navigationBar = <NavigationBar 
-      title='My' 
+      title='Personal Center ' 
       style={{backgroundColor: '#6495ED'}}
       />
     return (
