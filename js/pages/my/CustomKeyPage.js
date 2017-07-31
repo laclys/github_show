@@ -85,10 +85,10 @@ export default class CustomKeyPage extends Component {
         onClick={() => this.onClick(data)}
         leftText={leftText}
         isChecked={isChecked}
-        checkedImage={<Image style={{tintColor: '#6cf'}}
+        checkedImage={<Image style={{tintColor: '#6495ED'}}
           source={require('./images/ic_check_box.png')}
          />}
-        unCheckedImage={<Image style={{tintColor: '#6cf'}}
+        unCheckedImage={<Image style={{tintColor: '#6495ED'}}
           source={require('./images/ic_check_box_outline_blank.png')}
          />}
       />
@@ -125,6 +125,7 @@ export default class CustomKeyPage extends Component {
 
     return <View style={styles.container}>
       <NavigationBar title={title}
+        style={{backgroundColor: '#6495ED'}}
         leftButton={ViewUtils.getLeftButton(() => {
           this.onBack()
         })}

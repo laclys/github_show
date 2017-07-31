@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   sectionTitleText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 14,
     paddingVertical: 5
   },
   row: {

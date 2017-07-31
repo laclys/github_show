@@ -90,6 +90,7 @@ export default class SortKeyPage extends Component {
     </TouchableOpacity>
     return <View style={styles.container}>
       <NavigationBar
+        style={{backgroundColor: '#6495ED'}}
         title='Sort'
         leftButton={ViewUtils.getLeftButton(() => {
           this.onBack()

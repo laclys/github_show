@@ -65,8 +65,8 @@ export default class AboutPage extends Component {
     </View>
     return this.AboutCommon.render(content,{
       'name': 'Github Repo Show',
-      'desc': 'A Simple React Demo',
-      'avatar':'http://ww2.sinaimg.cn/mw690/68f74d54jw8f22cfa95ijj20ku0kumy7.jpg',
+      'desc': 'A Simple React Demo To Show GitHub Repo Data',
+      'avatar':'https://avatars3.githubusercontent.com/u/22010181?v=4&s=460',
       'backgroundImg':'http://img.t.sinajs.cn/t5/skin/public/covervip/2042.jpg'
     })
   }
