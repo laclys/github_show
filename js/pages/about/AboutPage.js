@@ -35,8 +35,6 @@ export default class AboutPage extends Component {
         params.url = 'https://github.com/laclys/github_show'
         params.title = 'In GitHub'
         break
-    }
-    switch (tab) {
       case MORE_MENU.Feedback:
         var url = 'mailto://laclys@126.com'
         // 检查是否安装了对应的应用

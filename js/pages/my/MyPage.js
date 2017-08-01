@@ -8,6 +8,7 @@ import {MORE_MENU} from '../../common/MoreMenu'
 import GlobalStyles from '../../../res/styles/GlobalStyles'
 import ViewUtils from '../../util/ViewUtils'
 import AboutPage from '../about/AboutPage'
+import AboutMePage from '../about/AboutMePage'
 
 export default class MyPage extends Component {
   constructor (props) {
@@ -40,9 +41,10 @@ export default class MyPage extends Component {
       case MORE_MENU.Theme:
         break
       case MORE_MENU.About_Author:
+        TargetComponent=AboutMePage
         break
       case MORE_MENU.About:
-      TargetComponent=AboutPage
+        TargetComponent=AboutPage
         break
     }
     if(TargetComponent){

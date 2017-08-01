@@ -15,7 +15,7 @@ import {
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import ViewUtils from '../../util/ViewUtils';
 
-export var FLAG_ABOUT={flag_about:'about',flag_about_me:'about'};
+export var FLAG_ABOUT={flag_about:'about',flag_about_me:'about_me'};
 
 export default class AboutCommon {
   constructor(props,updateState,flag_about) {
