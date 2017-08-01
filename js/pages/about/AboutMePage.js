@@ -10,7 +10,8 @@ import {
   Dimensions,
   ListView,
   Platform,
-  Linking
+  Linking,
+  Clipboard
 } from 'react-native'
 
 import ViewUtils from '../../util/ViewUtils';
@@ -18,6 +19,7 @@ import {MORE_MENU} from '../../common/MoreMenu';
 import GlobalStyles from '../../../res/styles/GlobalStyles'
 import AboutCommon,{FLAG_ABOUT} from './AboutCommon'
 import WebViewPage from '../WebViewPage'
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 const FLAG = {
   WWW: {
@@ -32,8 +34,8 @@ const FLAG = {
         url:'https://github.com/laclys/'
       },
       WEIBO: {
-        title:'WeiBo',
-        url:'http://www.weibo.com/lacly/'
+        title:'Douban',
+        url:'https://www.douban.com/people/lacly/'
       },
       INS: {
         title:'Instagram',
@@ -50,7 +52,7 @@ const FLAG = {
       },
       WEIXIN: {
         title:'Weixin',
-        account:'13028517639'
+        account:'laclys'
       },
       QQ: {
         title:'QQ',
@@ -88,11 +90,50 @@ export default class AboutMePage extends Component {
           showBlog:!this.state.showBlog
         })
         break
+      case FLAG.WWW.items.BLOG:
+        TargetComponent = WebViewPage
+        params.url = tab.url
+        params.title = tab.title
+        break
+      case FLAG.WWW.items.GITHUB:
+        TargetComponent = WebViewPage
+        params.url = tab.url
+        params.title = tab.title
+        break
+      case FLAG.WWW.items.WEIBO:
+        TargetComponent = WebViewPage
+        params.url = tab.url
+        params.title = tab.title
+        break
+      case FLAG.WWW.items.INS:
+        TargetComponent = WebViewPage
+        params.url = tab.url
+        params.title = tab.title
+        break
       case FLAG.CONTACT:
         this.updateState({
           showContact:!this.state.showContact
         })
         break
+      case FLAG.CONTACT.items.QQ:{
+        Clipboard.setString(tab.account)
+        this.toast.show('QQ'+tab.account+'已复制')
+      }
+      case FLAG.CONTACT.items.WEIXIN:{
+        Clipboard.setString(tab.account)
+        this.toast.show('微信号'+tab.account+'已复制')
+      }
+      case FLAG.CONTACT.items.EMAIL:{
+        var url = `mailto://${tab.account}`
+        // 检查是否安装了对应的应用
+        Linking.canOpenURL(url).then(supported => {
+          if (!supported) {
+            console.log('Can\'t handle url: ' + url);
+          } else {
+            return Linking.openURL(url);
+          }
+        }).catch(err => console.error('An error occurred', err));
+      }
     }
     if(TargetComponent){
       this.props.navigator.push({
@@ -125,12 +166,21 @@ export default class AboutMePage extends Component {
       <View style={GlobalStyles.line} />
       {this.state.showContact?this.renderItems(FLAG.CONTACT.items,true):null}
     </View>
-    return this.AboutCommon.render(content,{
+    return (
+    <View style={styles.container}>
+      {this.AboutCommon.render(content,{
       'name': 'Lac',
       'desc': 'Coder TV-Gamer Runner',
       'avatar':'http://tva2.sinaimg.cn/crop.0.0.750.750.180/68f74d54jw8f22cfa95ijj20ku0kumy7.jpg',
       'backgroundImg':'http://img.t.sinajs.cn/t5/skin/public/covervip/2042.jpg'
-    })
+    })}
+    <Toast ref={e=>this.toast=e}></Toast>
+    </View> 
+    )
   }
 }
-
+const styles = StyleSheet.create({
+  container: {
+    flex:1
+  }
+})
