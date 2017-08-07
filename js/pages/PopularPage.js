@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, TextInput, ListView, RefreshControl, DeviceEventEmitter} from 'react-native'
+import {View, Text, StyleSheet, TextInput, ListView, RefreshControl,Image, DeviceEventEmitter,TouchableOpacity} from 'react-native'
 import NavigationBar from '../common/NavigationBar'
 import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import HomePage from './HomePages'
@@ -10,6 +10,7 @@ import RepositoryDetail from './RepositoryDetail'
 import ProjectModel from '../model/ProjectModel'
 import FavoriteDao from '../expand/dao/FavoriteDao'
 import Utills from '../util/Utills'
+import SearchPage from './SearchPage'
 
 const URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars&order=desc'
@@ -38,6 +39,29 @@ export default class PopularPage extends Component {
         console.log(error)
       })
   }
+  renderRightButton(){
+    return <View style={{padding:5,marginRight:8}}>
+      <TouchableOpacity
+        onPress={
+          ()=>{
+            this.props.navigator.push({
+              component: SearchPage,
+              params:{
+                ...this.props
+              }
+            })
+          }
+        }
+      >
+        <View>
+          <Image 
+            style={{width:24,height:24}}
+            source ={require('../../res/images/ic_search_white_48pt.png')}
+          />
+        </View>
+      </TouchableOpacity>
+    </View> 
+  }
   render () {
     let content = this.state.languages.length > 0
       ? <ScrollableTabView
@@ -59,7 +83,9 @@ export default class PopularPage extends Component {
     return <View style={styles.container}>
       <NavigationBar
         title={'Popular'}
+        leftButton={<View></View>}
         style={{backgroundColor: '#6495ED'}}
+        rightButton = {this.renderRightButton()}
       />
       {content}
     </View>

@@ -20,12 +20,6 @@ export default class NavigationBar extends Component {
     rightButton: PropTypes.element,
     statusBar:PropTypes.shape(StatusBarShape)
   }
-  // static defaultProps={
-  //   statusBar:{
-  //     barStyle:'light-content',
-  //     hidden:false
-  //   }
-  // }
   constructor(props) {
     super(props);
     this.state = {
