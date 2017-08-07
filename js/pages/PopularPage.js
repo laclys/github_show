@@ -102,7 +102,6 @@ class PopularTab extends Component {
     for (var i = 0, len = items.length; i < len; i++) {
       projectModels.push(new ProjectModel(items[i], Utills.checkFavorite(items[i], this.state.favoriteKeys)))
     }
-    // console.log(projectModels);
     this.updateState({
       isLoading: false,
       dataSource: this.getDataSource(projectModels)
