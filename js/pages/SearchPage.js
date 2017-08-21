@@ -3,13 +3,74 @@ import {View, Text, StyleSheet, TextInput, ListView, RefreshControl, DeviceEvent
 import NavigationBar from '../common/NavigationBar'
 import ViewUtils from '../util/ViewUtils'
 import GlobalStyles from '../../res/styles/GlobalStyles'
+import Toast,{DURATION}  from 'react-native-easy-toast'
+import {FLAG_STORAGE} from '../expand/dao/DataRepository'
+import ProjectModel from '../model/ProjectModel'
+import FavoriteDao from '../expand/dao/FavoriteDao'
+import Utills from '../util/Utills'
+import RepositoryCell from '../common/RepositoryCell'
+
+const API_URL = 'https://api.github.com/search/repositories?q='
+const QUERY_STR = '&sort=stars&order=desc'
 
 export default class SearchPage extends Component {
   constructor (props) {
     super(props)
+    this.favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
+    this.favoriteKeys=[]
     this.state = {
-      rightBtnText:'Search'
+      rightBtnText:'Search',
+      isLoading:false,
+      dataSource: new ListView.DataSource({
+        rowHasChanged:(r1,r2)=>r1!=r2
+      })
     }
+  }
+
+loadData(){
+  this.updateState({
+    isLoading:true
+  })
+  fetch(this.genUrl(this.inputKey))
+    .then(res=>res.json())
+    .then(resData =>{
+      this.items=resData.items
+      console.log(this.items)
+      this.getFavoriteKeys()
+    }).catch(e=>{
+      this.updateState({
+        isLoading:false,
+        rightBtnText:'Search',
+      })
+    })
+}
+  getDataSource (items) {
+    return this.state.dataSource.cloneWithRows(items)
+  }
+  flushFavoriteState () {
+    let projectModels = []
+    let items = this.items
+    for (var i = 0, len = items.length; i < len; i++) {
+      projectModels.push(new ProjectModel(items[i], Utills.checkFavorite(items[i], this.favoriteKeys)))
+    }
+    this.updateState({
+      isLoading: false,
+      dataSource: this.getDataSource(projectModels),
+      rightBtnText:'Search',
+    })
+  }
+  getFavoriteKeys () {
+    this.favoriteDao.getFavoriteKeys()
+        .then(keys => {
+          this.favoriteKeys=keys||[]
+          this.flushFavoriteState()
+        })
+        .catch(e => {
+          this.flushFavoriteState()
+        })
+  }
+  genUrl (key) {
+    return API_URL + key + QUERY_STR
   }
   componentDidMount () {
   }
@@ -25,15 +86,18 @@ export default class SearchPage extends Component {
       this.updateState({
         rightBtnText:'Cancel'
       })
+      this.loadData()
     }else{
       this.updateState({
-        rightBtnText:'Search'
+        rightBtnText:'Search',
+        isLoading:false
       })
     }
   }
   renderNavBar(){
     let backBtn = ViewUtils.getLeftButton(()=>this.onBackPress())
     let inputView = <TextInput
+      onChangeText={text =>this.inputKey = text}
       ref="input"
       style ={styles.textInput}
     >
@@ -71,15 +135,43 @@ export default class SearchPage extends Component {
       {rightBtn}
     </View>
   }
+  onSelect (projectModel) {
+    this.props.navigator.push({
+      title: projectModel.item.full_name,
+      component: RepositoryDetail,
+      params: {
+        projectModel: projectModel,
+        parentComponent: this,
+        flag: FLAG_STORAGE.flag_popular,
+        ...this.props
+      }
+    })
+  }
+  renderRow (projectModel) {
+    return <RepositoryCell
+      key={projectModel.item.id}
+      projectModel={projectModel}
+      onSelect={() => this.onSelect(projectModel)}
+      onFavorite={(item, isFavorite) => this.onFavorite(item, isFavorite)}
+      />
+  }
   render () {
     let statusBar = null
     if(Platform.OS ==='ios'){
       statusbar = <View style={[styles.statusBar,{backgroundColor:'#6495ED'}]}>
       </View>  
     }
+    let listView =<ListView
+      dataSource={this.state.dataSource}
+      renderRow={data=>this.renderRow(data)}
+    />
     return <View style={GlobalStyles.root_container}>
        {statusbar} 
       {this.renderNavBar()}
+      {listView}
+      <Toast
+        ref={toast=>this.toast=toast}
+      ></Toast>
     </View>
   }
 }
