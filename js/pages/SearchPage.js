@@ -47,6 +47,14 @@ loadData(){
   getDataSource (items) {
     return this.state.dataSource.cloneWithRows(items)
   }
+  onFavorite (item, isFavorite) {
+    console.log(item, isFavorite)
+    if (isFavorite) {
+      this.favoriteDao.saveFavoriteItem(item.id.toString(), JSON.stringify(item))
+    } else {
+      this.favoriteDao.removeFavoriteItem(item.id.toString())
+    }
+  }
   flushFavoriteState () {
     let projectModels = []
     let items = this.items
