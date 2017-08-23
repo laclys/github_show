@@ -1,7 +1,8 @@
 /**
  * 全局样式
  */
-
+import { Dimensions } from 'react-native'
+const {height,width} = Dimensions.get('window')
  module.exports = {
    line:{
     //  flex:1,
@@ -15,4 +16,5 @@
     },
     nav_bar_height_ios:44,
     nav_bar_height_android:50,
+    window_height: height
  }

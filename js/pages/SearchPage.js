@@ -18,6 +18,7 @@ import ProjectModel from '../model/ProjectModel'
 import FavoriteDao from '../expand/dao/FavoriteDao'
 import Utills from '../util/Utills'
 import RepositoryCell from '../common/RepositoryCell'
+import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
 
 const API_URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars&order=desc'
@@ -27,15 +28,26 @@ export default class SearchPage extends Component {
     super(props)
     this.favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular)
     this.favoriteKeys=[]
+    this.keys = []
+    this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
     this.state = {
       rightBtnText:'Search',
       isLoading:false,
+      showBottomBtn: true,
       dataSource: new ListView.DataSource({
         rowHasChanged:(r1,r2)=>r1!=r2
       })
     }
   }
-
+  componentDidMount() {
+    this.initKeys()
+  }
+  /**
+   * 获取所有标签
+   */
+  async initKeys() {
+    this.keys = await this.languageDao.fetch()
+  }
 loadData(){
   this.updateState({
     isLoading:true
@@ -192,11 +204,29 @@ loadData(){
       {indicatorView}
       {listView}
     </View>
-
+    let bottomBtn =this.state.showBottomBtn?
+    <TouchableOpacity
+      style={[styles.btn,{backgroundColor:'#6495ED'}]}
+    >
+      <View
+        style={{
+          justifyContent: 'center'
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 18,
+            color: 'white',
+            fontWeight: '500'
+          }}
+        >add Tab</Text>
+      </View>
+    </TouchableOpacity>:null
     return <View style={GlobalStyles.root_container}>
        {statusbar} 
       {this.renderNavBar()}
       {resultView}
+      {bottomBtn}
       <Toast
         ref={toast=>this.toast=toast}
       ></Toast>
@@ -228,5 +258,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1
+  },
+  btn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.9,
+    height:40,
+    position: 'absolute',
+    left: 10,
+    right: 10,
+    top: GlobalStyles.window_height - 45,
+    borderRadius: 3 
   }
 })
