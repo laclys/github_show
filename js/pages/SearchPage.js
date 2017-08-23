@@ -1,5 +1,14 @@
 import React, {Component} from 'react'
-import {View, Text, StyleSheet, TextInput, ListView, RefreshControl, DeviceEventEmitter,Platform,StatusBar,TouchableOpacity} from 'react-native'
+import {View,
+  Text, 
+  StyleSheet,
+  TextInput, 
+  ListView, 
+  RefreshControl, 
+  DeviceEventEmitter,
+  Platform,StatusBar,
+  TouchableOpacity,
+  ActivityIndicator} from 'react-native'
 import NavigationBar from '../common/NavigationBar'
 import ViewUtils from '../util/ViewUtils'
 import GlobalStyles from '../../res/styles/GlobalStyles'
@@ -169,14 +178,25 @@ loadData(){
       statusbar = <View style={[styles.statusBar,{backgroundColor:'#6495ED'}]}>
       </View>  
     }
-    let listView =<ListView
+    let listView =!this.state.isLoading?<ListView
       dataSource={this.state.dataSource}
       renderRow={data=>this.renderRow(data)}
-    />
+    />:null
+    let indicatorView = this.state.isLoading?
+      <ActivityIndicator
+        style={styles.centering}
+        size= 'large'
+        animating ={this.state.isLoading}
+      /> : null
+    let resultView=<View style={{flex: 1}}>
+      {indicatorView}
+      {listView}
+    </View>
+
     return <View style={GlobalStyles.root_container}>
        {statusbar} 
       {this.renderNavBar()}
-      {listView}
+      {resultView}
       <Toast
         ref={toast=>this.toast=toast}
       ></Toast>
@@ -203,5 +223,10 @@ const styles = StyleSheet.create({
     borderRadius:3,
     opacity:0.7,
     color:'white'
+  },
+  centering: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
   }
 })
