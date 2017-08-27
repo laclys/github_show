@@ -96,6 +96,9 @@ loadData(){
   this.cancelable.promise
     .then(res=>res.json())
     .then(resData =>{
+      if(!this) {
+        return
+      }
       this.items=resData.items
       console.log(this.items)
       this.getFavoriteKeys()
