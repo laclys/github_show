@@ -33,7 +33,7 @@ export default class SearchPage extends Component {
     this.state = {
       rightBtnText:'Search',
       isLoading:false,
-      showBottomBtn: true,
+      showBottomBtn: false,
       dataSource: new ListView.DataSource({
         rowHasChanged:(r1,r2)=>r1!=r2
       })
@@ -43,10 +43,39 @@ export default class SearchPage extends Component {
     this.initKeys()
   }
   /**
+   * 添加标签
+   */
+  saveKey() {
+    let key = this.inputKey;
+    if(this.checkKeyIsExist(this.keys,key)){
+      this.toast.show(key.name + '已经存在', DURATION.LENGTH_LONG)
+    }else {
+      key = {
+        "path": key,
+        "name": key,
+        "checked": true
+      }
+      this.keys.unshift(key)
+      this.languageDao.save(this.keys)
+      this.toast.show(key.name + '保存成功', DURATION.LENGTH_LONG)
+    }
+  }
+  /**
    * 获取所有标签
    */
   async initKeys() {
     this.keys = await this.languageDao.fetch()
+  }
+  /**
+   * 检查key是否存在于keys中
+   */
+  checkKeyIsExist(keys, key) {
+    for(let i = 0;i<keys.length;i++) {
+      if(key.toLowerCase() === keys[i].name.toLowerCase() ){
+        return true
+      }
+    }
+    return false
   }
 loadData(){
   this.updateState({
@@ -58,6 +87,11 @@ loadData(){
       this.items=resData.items
       console.log(this.items)
       this.getFavoriteKeys()
+      if(!this.checkKeyIsExist(this.keys, this.inputKey)){
+        this.updateState({
+          showBottomBtn: true
+        })
+      }
     }).catch(e=>{
       this.updateState({
         isLoading:false,
@@ -100,8 +134,6 @@ loadData(){
   }
   genUrl (key) {
     return API_URL + key + QUERY_STR
-  }
-  componentDidMount () {
   }
   onBackPress(){
     this.refs.input.blur();
@@ -207,6 +239,9 @@ loadData(){
     let bottomBtn =this.state.showBottomBtn?
     <TouchableOpacity
       style={[styles.btn,{backgroundColor:'#6495ED'}]}
+      onPress = { () => {
+        this.saveKey()
+      }}
     >
       <View
         style={{
