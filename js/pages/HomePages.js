@@ -36,7 +36,7 @@ export default class HomePage extends Component {
   }
   onAction(action, params) {
     if (ACTION_HOME.A_RESTART === action) {
-      this.onRestart()
+      this.onRestart(params)
     }else if (ACTION_HOME.A_SHOW_TOAST === action) {
       this.toast.show(params.text,DURATION.LENGTH_LONG)
     }
