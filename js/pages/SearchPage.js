@@ -21,6 +21,8 @@ import Utills from '../util/Utills'
 import RepositoryCell from '../common/RepositoryCell'
 import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
 import {ACTION_HOME} from './HomePages'
+import makeCancelable from '../util/Cancelable'
+
 const API_URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars&order=desc'
 
@@ -87,9 +89,11 @@ export default class SearchPage extends Component {
   }
 loadData(){
   this.updateState({
-    isLoading:true
+    isLoading:true,
+    showBottomBtn: false
   })
-  fetch(this.genUrl(this.inputKey))
+  this.cancelable = makeCancelable(fetch(this.genUrl(this.inputKey)))
+  this.cancelable.promise
     .then(res=>res.json())
     .then(resData =>{
       this.items=resData.items
@@ -161,6 +165,7 @@ loadData(){
         rightBtnText:'Search',
         isLoading:false
       })
+      this.cancelable && this.cancelable.cancel()
     }
   }
   renderNavBar(){
