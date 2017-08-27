@@ -8,7 +8,8 @@ import {View,
   DeviceEventEmitter,
   Platform,StatusBar,
   TouchableOpacity,
-  ActivityIndicator} from 'react-native'
+  ActivityIndicator
+} from 'react-native'
 import NavigationBar from '../common/NavigationBar'
 import ViewUtils from '../util/ViewUtils'
 import GlobalStyles from '../../res/styles/GlobalStyles'
@@ -19,7 +20,7 @@ import FavoriteDao from '../expand/dao/FavoriteDao'
 import Utills from '../util/Utills'
 import RepositoryCell from '../common/RepositoryCell'
 import LanguageDao,{FLAG_LANGUAGE} from '../expand/dao/LanguageDao'
-
+import {ACTION_HOME} from './HomePages'
 const API_URL = 'https://api.github.com/search/repositories?q='
 const QUERY_STR = '&sort=stars&order=desc'
 
@@ -30,6 +31,7 @@ export default class SearchPage extends Component {
     this.favoriteKeys=[]
     this.keys = []
     this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key)
+    this.isKeyChange = false
     this.state = {
       rightBtnText:'Search',
       isLoading:false,
@@ -41,6 +43,11 @@ export default class SearchPage extends Component {
   }
   componentDidMount() {
     this.initKeys()
+  }
+  componentWillUnmount() {
+    if(this.isKeyChange) {
+      DeviceEventEmitter.emit('ACTION_HOME', ACTION_HOME.A_RESTART)
+    }
   }
   /**
    * 添加标签
@@ -58,6 +65,7 @@ export default class SearchPage extends Component {
       this.keys.unshift(key)
       this.languageDao.save(this.keys)
       this.toast.show(key.name + '保存成功', DURATION.LENGTH_LONG)
+      this.isKeyChange = true
     }
   }
   /**
