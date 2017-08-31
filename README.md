@@ -51,7 +51,7 @@ $ react-native run-ios/run-android
 ![](./demoPic/demo10.png)
 
 ## Features
-- search
+- search  √
 - theme setting
 - update RN0.46
 - make App beautiful
