@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "GitHubTrending": "^2.0.0",
-    "react": "15.4.1",
-    "react-native": "0.39.2",
+    "react": "^16.0.0-alpha.6",
+    "react-native": "^0.43.4",
     "react-native-check-box": "^1.0.4",
     "react-native-easy-toast": "^1.0.5",
     "react-native-htmlview": "0.5.0",
