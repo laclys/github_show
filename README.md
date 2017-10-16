@@ -53,6 +53,6 @@ $ react-native run-ios/run-android
 ## Features
 - search  √
 - AnalyticsModule √
+- update RN0.43.4 √
 - theme setting
-- update RN0.46
 - make App beautiful
